@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/LivePager/LivePager.API/bin/Debug/net8.0
+/LivePager/.vs/LivePager
+/LivePager/LivePager.API/obj
