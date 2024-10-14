@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LivePager.API", "LivePager.API\LivePager.API.csproj", "{43202044-F188-479F-9CD0-8AAE5C814B5B}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "livepager.frontend", "LivePager.Frontend\livepager.frontend.esproj", "{BC440988-F8B7-4D80-AFEF-21A1941AB237}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43202044-F188-479F-9CD0-8AAE5C814B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43202044-F188-479F-9CD0-8AAE5C814B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43202044-F188-479F-9CD0-8AAE5C814B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43202044-F188-479F-9CD0-8AAE5C814B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC440988-F8B7-4D80-AFEF-21A1941AB237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC440988-F8B7-4D80-AFEF-21A1941AB237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC440988-F8B7-4D80-AFEF-21A1941AB237}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BC440988-F8B7-4D80-AFEF-21A1941AB237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC440988-F8B7-4D80-AFEF-21A1941AB237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC440988-F8B7-4D80-AFEF-21A1941AB237}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB0083DF-A959-4BD3-9571-C65A744221A1}
+	EndGlobalSection
+EndGlobal
