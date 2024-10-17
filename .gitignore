@@ -5,3 +5,7 @@
 /LivePager/LivePager.API/bin/Debug/net8.0
 /LivePager/.vs/LivePager
 /LivePager/LivePager.API/obj
+/.vs
+/LivePager/LivePager.API.UnitTests/obj
+/LivePager/LivePager.API.UnitTests/bin/Debug/net8.0
+/LivePager/.vs/ProjectEvaluation

@@ -1,22 +1,64 @@
+using LivePager.API.Features.Authentication;
 using LivePager.API.Features.Location;
 using LivePager.API.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.AddLocationFeature();
 builder.Services.AddInfrastructure();
+builder.Services.AddAuthenticationFeature();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "yourdomain.com",
+        ValidAudience = "yourdomain.com",
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Keys:Authentication:Secret"]!))
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    // Set a default policy that requires authentication
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.AddCors(x =>
 {
+    var clients = builder.Configuration
+        .GetSection("Keys:Cors:Clients")
+        .Get<string[]>()!;
+
     x.AddPolicy("frontend", configurePolicy =>
     {
         configurePolicy
-            .WithOrigins("https://localhost:5173")
+            .WithOrigins(clients)
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -29,6 +71,8 @@ if (builder.Environment.IsDevelopment())
         siloBuilder.UseLocalhostClustering();
         siloBuilder.AddMemoryGrainStorage("LocationStore");
     });
+
+
 }
 
 var app = builder.Build();
@@ -42,6 +86,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("frontend");
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseLocationFeature();
+app.UseAuthenticationFeature();
 
 app.Run();
