@@ -2,6 +2,8 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import "./App.css";
 import TrackingPage from "./features/location/TrackingPage";
 import Home from "./Home";
+import LoginPage from "./LoginPage";
+import ProtectedRoute from "./common/auth/protected-route";
 
 function App() {
   return (
@@ -22,13 +24,33 @@ function App() {
                 Tracking
               </Link>
             </li>
+            <li>
+              <Link to="/login" className="text-white hover:underline">
+                Login
+              </Link>
+            </li>
           </ul>
         </nav>
       </header>
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/tracking" element={<TrackingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tracking"
+          element={
+            <ProtectedRoute>
+              <TrackingPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
 
       <footer className="flex justify-center items-center p-4 bg-gray-800 text-white">
