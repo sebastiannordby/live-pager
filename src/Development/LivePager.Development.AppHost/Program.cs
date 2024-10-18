@@ -4,14 +4,18 @@ var builder = DistributedApplication.CreateBuilder(args);
 var siloHost = builder.AddProject<Projects.LivePager_SiloHost>("siloHost");
 
 // Add the API Service project
-var gatewayService = builder.AddProject<Projects.LivePager_API>("gatewayService")
-    .WithReference(siloHost); // Ensure the API service can reference the silo host
+var gatewayService = builder.AddProject<Projects.LivePager_API>("gateway-service")
+    .WithReference(siloHost)
+    .WithHttpsEndpoint(5170, name: "gateway-service-https"); // Ensure the API service can reference the silo host
+
+// Manually construct the API URI based on the environment configuration
 
 // Add the Web Frontend project
-builder.AddNpmApp("react", "../../Clients/livepager.frontend")
+builder.AddNpmApp("frontend", "../../Clients/livepager.frontend", "dev")
     .WithReference(gatewayService)
-    .WithEnvironment("BROWSER", "none") // Disable opening browser on npm start
-    .WithHttpEndpoint(env: "PORT")
+    .WithEnvironment("BROWSER", "none")
+    .WithEnvironment("VITE_API_URI", "https://localhost:5170/") // Disable opening browser on npm start
+    .WithHttpsEndpoint(5173, name: "frontend", env: "PORT")
     .WithExternalHttpEndpoints();
 
 builder.Build().Run();

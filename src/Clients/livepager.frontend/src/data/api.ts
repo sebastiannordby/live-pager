@@ -4,7 +4,7 @@ import { LoginResponse } from "./models/authentication/login-response";
 
 export async function login(request: LoginRequest): Promise<LoginResponse> {
   const response = await axiosInstance.post<LoginResponse>(
-    "/api/authentication/login",
+      "/api/authentication/login",
     request
   );
 
