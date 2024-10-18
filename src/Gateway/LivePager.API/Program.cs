@@ -1,6 +1,5 @@
 using LivePager.API.Features.Authentication;
 using LivePager.API.Features.Location;
-using LivePager.API.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -17,8 +16,6 @@ builder.Configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
-builder.AddLocationFeature();
-builder.Services.AddInfrastructure();
 builder.Services.AddAuthenticationFeature();
 
 builder.Services.AddAuthentication(options =>
@@ -66,7 +63,10 @@ builder.Services.AddCors(x =>
 
 if (builder.Environment.IsDevelopment())
 {
-    // Dev Setup
+    builder.Services.AddOrleansClient(clientBuilder =>
+    {
+        clientBuilder.UseLocalhostClustering();
+    });
 }
 
 var app = builder.Build();
@@ -84,5 +84,4 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseLocationFeature();
 app.UseAuthenticationFeature();
-
 app.Run();
