@@ -1,4 +1,5 @@
-﻿using LivePager.API.Infrastructure.Models;
+﻿using LivePager.API.Features.Authentication.CreateUser;
+using LivePager.API.Infrastructure.Models;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -39,6 +40,13 @@ namespace LivePager.API.Features.Users
             var user = Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == hashedPassword);
 
             return await Task.FromResult(user);
+        }
+
+        public async Task<User?> CreateUserAsync(
+            CreateUserRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            return null;
         }
     }
 }

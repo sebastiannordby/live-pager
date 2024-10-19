@@ -1,4 +1,4 @@
-﻿namespace LivePager.API.UnitTests.Features.Location
+﻿namespace LivePager.API.Tests.Unit.Features.Location
 {
     internal class LocationGrainTests
     {
