@@ -24,8 +24,15 @@ jobs:
       with:
         node-version: '22.x'
 
+    - name: Build Frontend
+      run: |
+        cd src/Clients/livepager.frontend
+        npm run install
+        npm run build
+
     - name: Restore workloads
-      run: dotnet workload restore
+      run: |
+       dotnet workload install aspire
         
     - name: Restore dependencies
       run: dotnet restore
