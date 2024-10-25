@@ -1,4 +1,4 @@
-﻿using LivePager.Grains.Features.Location.Repositories;
+﻿using LivePager.Grains.Features.Participant.Repositories;
 using LivePager.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 

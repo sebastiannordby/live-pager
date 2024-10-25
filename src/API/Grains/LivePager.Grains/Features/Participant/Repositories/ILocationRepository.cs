@@ -1,6 +1,6 @@
 ﻿using LivePager.Grains.Contracts.Location;
 
-namespace LivePager.Grains.Features.Location.Repositories
+namespace LivePager.Grains.Features.Participant.Repositories
 {
     public interface ILocationRepository
     {
