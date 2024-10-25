@@ -1,4 +1,4 @@
-﻿namespace LivePager.Grains.Contracts.Location
+﻿namespace LivePager.Grains.Contracts.Participant
 {
     [Serializable]
     public class LocationState

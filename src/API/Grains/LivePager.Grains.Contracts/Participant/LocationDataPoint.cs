@@ -1,6 +1,6 @@
 ﻿using Orleans;
 
-namespace LivePager.Grains.Contracts.Location
+namespace LivePager.Grains.Contracts.Participant
 {
     [GenerateSerializer]
     public class LocationDataPoint

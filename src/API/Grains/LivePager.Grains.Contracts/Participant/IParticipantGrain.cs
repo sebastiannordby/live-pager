@@ -1,4 +1,4 @@
-﻿namespace LivePager.Grains.Contracts.Location
+﻿namespace LivePager.Grains.Contracts.Participant
 {
     public interface IParticipantGrain : IGrainWithStringKey
     {

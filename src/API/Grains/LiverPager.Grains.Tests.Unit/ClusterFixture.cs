@@ -1,4 +1,5 @@
 ﻿using LivePager.Grains.Features.Participant.Repositories;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Orleans.TestingHost;
 
@@ -15,6 +16,7 @@ namespace LiverPager.Grains.Tests.Unit
         {
             Cluster = new TestClusterBuilder()
                 .AddSiloBuilderConfigurator<TestSiloConfigurations>()
+                .AddClientBuilderConfigurator<ClientConfigurator>()
                 .Build();
 
             Cluster.Deploy();
@@ -31,7 +33,18 @@ namespace LiverPager.Grains.Tests.Unit
             public void Configure(ISiloBuilder siloBuilder)
             {
                 siloBuilder
-                    .AddMemoryGrainStorage("LocationStore");
+                    .AddMemoryGrainStorage("LocationStore")
+                    .AddMemoryGrainStorage("MissionStore")
+                    .AddMemoryGrainStorage("PubSubStore")
+                    .AddMemoryStreams("DefaultStreamProvider");
+            }
+        }
+
+        private class ClientConfigurator : IClientBuilderConfigurator
+        {
+            public void Configure(IConfiguration configuration, IClientBuilder clientBuilder)
+            {
+                clientBuilder.AddMemoryStreams("DefaultStreamProvider"); // Add stream provider to client
             }
         }
     }

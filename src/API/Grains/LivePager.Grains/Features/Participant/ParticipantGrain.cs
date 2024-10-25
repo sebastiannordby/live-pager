@@ -1,4 +1,4 @@
-﻿using LivePager.Grains.Contracts.Location;
+﻿using LivePager.Grains.Contracts.Participant;
 using Orleans.Providers;
 
 namespace LivePager.Grains.Features.Participant

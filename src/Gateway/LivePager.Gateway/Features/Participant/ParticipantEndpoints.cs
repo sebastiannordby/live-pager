@@ -1,17 +1,17 @@
 ﻿using LivePager.Gateway.Features.Location.Requests;
-using LivePager.Grains.Contracts.Location;
+using LivePager.Grains.Contracts.Participant;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LivePager.Gateway.Features.Location
 {
-    public class LocationEndpoints
+    public class ParticipantEndpoints
     {
         public static async Task<Ok> AddLocationDataPoint(
-            [FromBody] AddLocationDataPointRequest request,
+            [FromBody] AddParticipajtLocationDataPointRequest request,
             [FromServices] IClusterClient clusterClient,
-            [FromServices] IHubContext<LocationHub> hubContext)
+            [FromServices] IHubContext<ParticipantHub> hubContext)
         {
             var locationGrain = clusterClient
                 .GetGrain<IParticipantGrain>(request.UserIdentificator);

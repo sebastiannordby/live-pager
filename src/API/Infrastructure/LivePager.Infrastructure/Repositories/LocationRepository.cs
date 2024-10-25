@@ -1,5 +1,5 @@
-﻿using LivePager.Grains.Contracts.Location;
-using LivePager.Grains.Features.Participant.Repositories;
+﻿using LivePager.Grains.Contracts.Participant;
+using LivePager.Grains.Features.Location.Repositories;
 
 namespace LivePager.Infrastructure.Repositories
 {

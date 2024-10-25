@@ -1,10 +1,10 @@
 ﻿using Bogus;
-using LivePager.Grains.Contracts.Location;
+using LivePager.Grains.Contracts.Participant;
 using NSubstitute;
 
 namespace LiverPager.Grains.Tests.Unit.Features.Location
 {
-    [Collection(ClusterCollection.Name)]
+    [Collection(ClusterFixtureCollection.Name)]
     public class ParticipantGrainTests
     {
         private readonly Faker _faker = new();

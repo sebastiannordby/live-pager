@@ -2,7 +2,7 @@
 
 namespace LivePager.Gateway.Features.Location
 {
-    public class LocationHub : Hub
+    public class ParticipantHub : Hub
     {
     }
 }

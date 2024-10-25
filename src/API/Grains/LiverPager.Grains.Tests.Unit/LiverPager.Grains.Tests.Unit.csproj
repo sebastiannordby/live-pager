@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.Orleans.Core" Version="8.2.0" />
     <PackageReference Include="Microsoft.Orleans.Server" Version="8.2.0" />
     <PackageReference Include="Microsoft.Orleans.TestingHost" Version="8.2.0" />
+    <PackageReference Include="Microsoft.Orleans.Streaming" Version="8.2.0" />
     <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.17">
       <PrivateAssets>all</PrivateAssets>

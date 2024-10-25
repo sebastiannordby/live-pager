@@ -84,6 +84,6 @@ app.UseCors("frontend");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseLocationFeature();
+app.UseParticipantFeature();
 app.UseAuthenticationFeature();
 app.Run();
