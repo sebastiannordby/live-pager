@@ -2,7 +2,7 @@
 
 namespace LivePager.Grains.Contracts.Location
 {
-    public interface ILocationGrain : IGrainWithStringKey
+    public interface IParticipantGrain : IGrainWithStringKey
     {
         Task AddLocationAsync(
             LocationDataPoint dataPoint);

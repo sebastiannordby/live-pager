@@ -14,7 +14,7 @@ namespace LivePager.Gateway.Features.Location
             [FromServices] IHubContext<LocationHub> hubContext)
         {
             var locationGrain = clusterClient
-                .GetGrain<ILocationGrain>(request.UserIdentificator);
+                .GetGrain<IParticipantGrain>(request.UserIdentificator);
 
             var dataPoint = new LocationDataPoint
             {
