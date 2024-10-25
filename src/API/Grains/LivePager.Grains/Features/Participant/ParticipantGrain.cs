@@ -1,6 +1,4 @@
 ﻿using LivePager.Grains.Contracts.Location;
-using LivePager.Grains.Features.Participant.Repositories;
-using Orleans;
 using Orleans.Providers;
 
 namespace LivePager.Grains.Features.Participant
@@ -24,15 +22,15 @@ namespace LivePager.Grains.Features.Participant
         //        });
         //}
 
-        private async Task PersistLocationAsync(
-            object? arg, 
-            CancellationToken cancellationToken)
-        {
-            //await _locationRepository.SaveLocationsAsync(State.DataPoints);
-            State.DataPoints.Clear();
-        }
+        //private async Task PersistLocationAsync(
+        //    object? arg,
+        //    CancellationToken cancellationToken)
+        //{
+        //    //await _locationRepository.SaveLocationsAsync(State.DataPoints);
+        //    State.DataPoints.Clear();
+        //}
 
-        public async Task AddLocationAsync(
+        public async ValueTask AddLocationAsync(
             LocationDataPoint dataPoint)
         {
             if (State.DataPoints.Any(x => x.Longitude == dataPoint.Longitude
@@ -46,7 +44,7 @@ namespace LivePager.Grains.Features.Participant
             await WriteStateAsync();
         }
 
-        public async Task<LocationDataPoint[]> GetDataPointsAsync()
+        public async ValueTask<LocationDataPoint[]> GetDataPointsAsync()
         {
             return await Task.FromResult(State.DataPoints.ToArray());
         }

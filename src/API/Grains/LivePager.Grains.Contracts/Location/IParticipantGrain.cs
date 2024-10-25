@@ -1,11 +1,9 @@
-﻿using Orleans;
-
-namespace LivePager.Grains.Contracts.Location
+﻿namespace LivePager.Grains.Contracts.Location
 {
     public interface IParticipantGrain : IGrainWithStringKey
     {
-        Task AddLocationAsync(
+        ValueTask AddLocationAsync(
             LocationDataPoint dataPoint);
-        Task<LocationDataPoint[]> GetDataPointsAsync();
+        ValueTask<LocationDataPoint[]> GetDataPointsAsync();
     }
 }
