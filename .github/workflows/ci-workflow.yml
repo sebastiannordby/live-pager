@@ -23,6 +23,9 @@ jobs:
       uses: actions/setup-node@v4.1.0
       with:
         node-version: '22.x'
+
+    - name: Restore workloads
+      run: dotnet workload restore
         
     - name: Restore dependencies
       run: dotnet restore
