@@ -47,7 +47,7 @@ const CreateMission: React.FC = () => {
 
   // Handle map click events
   const MapClickHandler: React.FC = () => {
-    const map = useMap();
+    // const map = useMap();
     useMapEvents({
       click(e) {
         setPosition(e.latlng); // Set marker position on map click

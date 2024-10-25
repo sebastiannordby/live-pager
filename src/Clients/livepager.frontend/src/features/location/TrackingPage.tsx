@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import axiosInstance from "../../data/axios";
 
 export default function TrackingPage() {
