@@ -29,3 +29,5 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+/src/Clients/livepager.frontend/tsconfig.app.tsbuildinfo
+/src/Clients/livepager.frontend/tsconfig.node.tsbuildinfo

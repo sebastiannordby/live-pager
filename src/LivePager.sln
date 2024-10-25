@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.API", "Gateway\Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.API.Tests.Unit", "Gateway\LivePager.API.UnitTests\LivePager.API.Tests.Unit.csproj", "{7B225E0F-2C1A-4783-926E-DCECB7F855AA}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "livepager.frontend", "Clients\LivePager.Frontend\livepager.frontend.esproj", "{BC440988-F8B7-4D80-AFEF-21A1941AB237}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "livepager.frontend", "Clients\livepager.frontend\livepager.frontend.esproj", "{BC440988-F8B7-4D80-AFEF-21A1941AB237}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Grains", "Grains\LivePager.Grains\LivePager.Grains.csproj", "{CBD37DD7-E81B-41F2-9BB4-AE341F8FFCA9}"
 EndProject
