@@ -4,7 +4,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 var siloHost = builder.AddProject<Projects.LivePager_SiloHost>("siloHost");
 
 // Add the API Service project
-var gatewayService = builder.AddProject<Projects.LivePager_API>("gateway-service")
+var gatewayService = builder.AddProject<Projects.LivePager_Gateway>("gateway-service")
     .WithReference(siloHost)
     .WithHttpsEndpoint(5170, name: "gateway-service-https"); // Ensure the API service can reference the silo host
 

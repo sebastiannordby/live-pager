@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.API", "Gateway\LivePager.API\LivePager.API.csproj", "{43202044-F188-479F-9CD0-8AAE5C814B5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Gateway", "Gateway\LivePager.Gateway\LivePager.Gateway.csproj", "{43202044-F188-479F-9CD0-8AAE5C814B5B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.API.Tests.Unit", "Gateway\LivePager.API.UnitTests\LivePager.API.Tests.Unit.csproj", "{7B225E0F-2C1A-4783-926E-DCECB7F855AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Gateway.Tests.Unit", "Gateway\LivePager.Gateway.UnitTests\LivePager.Gateway.Tests.Unit.csproj", "{7B225E0F-2C1A-4783-926E-DCECB7F855AA}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "livepager.frontend", "Clients\livepager.frontend\livepager.frontend.esproj", "{BC440988-F8B7-4D80-AFEF-21A1941AB237}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Grains", "Grains\LivePager.Grains\LivePager.Grains.csproj", "{CBD37DD7-E81B-41F2-9BB4-AE341F8FFCA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Grains", "API\Grains\LivePager.Grains\LivePager.Grains.csproj", "{CBD37DD7-E81B-41F2-9BB4-AE341F8FFCA9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.SiloHost", "SiloHost\LivePager.SiloHost\LivePager.SiloHost.csproj", "{ECAA2FA9-12DE-4242-817E-CCB08982E7F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.SiloHost", "API\SiloHost\LivePager.SiloHost\LivePager.SiloHost.csproj", "{ECAA2FA9-12DE-4242-817E-CCB08982E7F7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Infrastructure", "Infrastructure\LivePager.Infrastructure\LivePager.Infrastructure.csproj", "{526B07CC-514A-4D45-92B9-B7A3F0617246}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Infrastructure", "API\Infrastructure\LivePager.Infrastructure\LivePager.Infrastructure.csproj", "{526B07CC-514A-4D45-92B9-B7A3F0617246}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{B4D66DD8-C12C-4227-A319-C8E9B15716AF}"
 EndProject
@@ -25,13 +25,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SiloHost", "SiloHost", "{F7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A8FFA080-0AAA-4FD0-8362-E27AB9A421EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Grains.Contracts", "Grains\LivePager.Grains.Contracts\LivePager.Grains.Contracts.csproj", "{A6795506-589C-495E-8DCD-6807BB2FB492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Grains.Contracts", "API\Grains\LivePager.Grains.Contracts\LivePager.Grains.Contracts.csproj", "{A6795506-589C-495E-8DCD-6807BB2FB492}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Development.AppHost", "Development\LivePager.Development.AppHost\LivePager.Development.AppHost.csproj", "{425046B2-3E5D-4CFE-900C-11F6A51CCF7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Development.ServiceDefaults", "Development\LivePager.Development.ServiceDefaults\LivePager.Development.ServiceDefaults.csproj", "{609E48F8-90DE-458A-876D-02B16AC019E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{295CADAF-C390-4572-82E2-B31550B343BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,9 @@ Global
 		{CBD37DD7-E81B-41F2-9BB4-AE341F8FFCA9} = {37DEA68D-B28B-419E-B4B0-BBF9076D3B37}
 		{ECAA2FA9-12DE-4242-817E-CCB08982E7F7} = {F793F7AA-4E58-444C-BE31-390AF237C6C2}
 		{526B07CC-514A-4D45-92B9-B7A3F0617246} = {A8FFA080-0AAA-4FD0-8362-E27AB9A421EE}
+		{37DEA68D-B28B-419E-B4B0-BBF9076D3B37} = {295CADAF-C390-4572-82E2-B31550B343BD}
+		{F793F7AA-4E58-444C-BE31-390AF237C6C2} = {295CADAF-C390-4572-82E2-B31550B343BD}
+		{A8FFA080-0AAA-4FD0-8362-E27AB9A421EE} = {295CADAF-C390-4572-82E2-B31550B343BD}
 		{A6795506-589C-495E-8DCD-6807BB2FB492} = {37DEA68D-B28B-419E-B4B0-BBF9076D3B37}
 		{425046B2-3E5D-4CFE-900C-11F6A51CCF7B} = {2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}
 		{609E48F8-90DE-458A-876D-02B16AC019E9} = {2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}
