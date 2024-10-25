@@ -4,8 +4,8 @@ import {
   TileLayer,
   Marker,
   Circle,
-  useMapEvents,
-  useMap,
+  useMapEvents
+  // useMap,
 } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
 import { Button, Slider } from "@mui/material";
