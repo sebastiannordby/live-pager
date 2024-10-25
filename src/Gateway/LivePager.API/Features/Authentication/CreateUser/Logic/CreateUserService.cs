@@ -14,6 +14,27 @@
             CancellationToken cancellationToken = default)
         {
             var result = new CreateUserResult();
+            var validationErrors = ValidateCommand(command);
+
+            if (validationErrors.Any())
+            {
+                result.Success = false;
+                result.ValidationErrors = validationErrors;
+
+                return result;
+            }
+
+            result.Success = true;
+            result.Username = command.Username;
+            result.Email = command.Email;
+            result.HashedPassword = _passwordHasher
+                .HashPassword(command.Password);
+
+            return await Task.FromResult(result);
+        }
+
+        private static Dictionary<string, List<string>> ValidateCommand(CreateUserCommand command)
+        {
             var validationErrors = new Dictionary<string, List<string>>();
 
             if (string.IsNullOrWhiteSpace(command.Username))
@@ -26,17 +47,7 @@
                 validationErrors.Add(nameof(command.Email), ["Cannot be null/empty"]);
             else if (!command.Email.Contains("@"))
                 validationErrors.Add(nameof(command.Email), ["Does not contain @"]);
-
-
-            result.ValidationErrors = validationErrors;
-            result.Success = validationErrors.Any() == false;
-
-            result.Username = command.Username;
-            result.Email = command.Email;
-            result.HashedPassword = _passwordHasher
-                .HashPassword(command.Password);
-
-            return await Task.FromResult(result);
+            return validationErrors;
         }
     }
 }

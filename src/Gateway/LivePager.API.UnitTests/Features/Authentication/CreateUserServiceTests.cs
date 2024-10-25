@@ -80,6 +80,7 @@ namespace LivePager.API.Tests.Unit.Features.User
 
             // Then
             Assert.NotEqual(output.HashedPassword, input.Password);
+            Assert.DoesNotContain(output.HashedPassword!, input.Password);
         }
     }
 }
