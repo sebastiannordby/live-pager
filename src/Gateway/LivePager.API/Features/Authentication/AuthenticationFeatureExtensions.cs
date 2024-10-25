@@ -1,4 +1,5 @@
-﻿using LivePager.API.Features.Users;
+﻿using LivePager.API.Features.Authentication.CreateUser.Logic;
+using LivePager.API.Features.Users;
 
 namespace LivePager.API.Features.Authentication
 {
@@ -8,6 +9,7 @@ namespace LivePager.API.Features.Authentication
             this IServiceCollection services)
         {
             return services
+                .AddTransient<CreateUserService>()
                 .AddTransient<AuthenticationService>();
         }
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.API", "Gateway\LivePager.API\LivePager.API.csproj", "{43202044-F188-479F-9CD0-8AAE5C814B5B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.API.UnitTests", "Gateway\LivePager.API.UnitTests\LivePager.API.UnitTests.csproj", "{7B225E0F-2C1A-4783-926E-DCECB7F855AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.API.Tests.Unit", "Gateway\LivePager.API.UnitTests\LivePager.API.Tests.Unit.csproj", "{7B225E0F-2C1A-4783-926E-DCECB7F855AA}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "livepager.frontend", "Clients\LivePager.Frontend\livepager.frontend.esproj", "{BC440988-F8B7-4D80-AFEF-21A1941AB237}"
 EndProject
@@ -25,11 +25,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SiloHost", "SiloHost", "{F7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A8FFA080-0AAA-4FD0-8362-E27AB9A421EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LivePager.Grains.Contracts", "Grains\LivePager.Grains.Contracts\LivePager.Grains.Contracts.csproj", "{A6795506-589C-495E-8DCD-6807BB2FB492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Grains.Contracts", "Grains\LivePager.Grains.Contracts\LivePager.Grains.Contracts.csproj", "{A6795506-589C-495E-8DCD-6807BB2FB492}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LivePager.Development.AppHost", "Development\LivePager.Development.AppHost\LivePager.Development.AppHost.csproj", "{425046B2-3E5D-4CFE-900C-11F6A51CCF7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Development.AppHost", "Development\LivePager.Development.AppHost\LivePager.Development.AppHost.csproj", "{425046B2-3E5D-4CFE-900C-11F6A51CCF7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivePager.Development.ServiceDefaults", "Development\LivePager.Development.ServiceDefaults\LivePager.Development.ServiceDefaults.csproj", "{609E48F8-90DE-458A-876D-02B16AC019E9}"
 EndProject
@@ -77,10 +77,6 @@ Global
 		{609E48F8-90DE-458A-876D-02B16AC019E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{609E48F8-90DE-458A-876D-02B16AC019E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{609E48F8-90DE-458A-876D-02B16AC019E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16BF774D-6EEF-44B9-AB57-AF57740BA63C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16BF774D-6EEF-44B9-AB57-AF57740BA63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16BF774D-6EEF-44B9-AB57-AF57740BA63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16BF774D-6EEF-44B9-AB57-AF57740BA63C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,7 +91,6 @@ Global
 		{A6795506-589C-495E-8DCD-6807BB2FB492} = {37DEA68D-B28B-419E-B4B0-BBF9076D3B37}
 		{425046B2-3E5D-4CFE-900C-11F6A51CCF7B} = {2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}
 		{609E48F8-90DE-458A-876D-02B16AC019E9} = {2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}
-		{16BF774D-6EEF-44B9-AB57-AF57740BA63C} = {2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB0083DF-A959-4BD3-9571-C65A744221A1}

@@ -1,5 +1,6 @@
 using LivePager.API.Features.Authentication;
 using LivePager.API.Features.Location;
+using LivePager.API.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +17,7 @@ builder.Configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddInfrastructure();
 builder.Services.AddAuthenticationFeature();
 
 builder.Services.AddAuthentication(options =>

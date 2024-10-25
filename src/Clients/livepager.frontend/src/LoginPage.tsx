@@ -1,7 +1,6 @@
 // src/features/auth/LoginPage.jsx
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "./data/axios";
 import { API } from "./data/api";
 
 function LoginPage() {

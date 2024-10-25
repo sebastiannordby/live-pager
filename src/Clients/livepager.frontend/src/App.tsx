@@ -4,6 +4,7 @@ import TrackingPage from "./features/location/TrackingPage";
 import Home from "./Home";
 import LoginPage from "./LoginPage";
 import ProtectedRoute from "./common/auth/protected-route";
+import CreateMission from "./features/mission/CreateMissionPage";
 
 function App() {
   return (
@@ -25,6 +26,11 @@ function App() {
               </Link>
             </li>
             <li>
+              <Link to="/mission/create" className="text-white hover:underline">
+                Create Mission
+              </Link>
+            </li>
+            <li>
               <Link to="/login" className="text-white hover:underline">
                 Login
               </Link>
@@ -32,27 +38,28 @@ function App() {
           </ul>
         </nav>
       </header>
-
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/tracking"
-          element={
-            <ProtectedRoute>
-              <TrackingPage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-
+      <main className="flex flex-col h-full">
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/mission/create" element={<CreateMission />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tracking"
+            element={
+              <ProtectedRoute>
+                <TrackingPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </main>
       <footer className="flex justify-center items-center p-4 bg-gray-800 text-white">
         <p>© 2024 Live Tracker App</p>
       </footer>
