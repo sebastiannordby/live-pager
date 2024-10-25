@@ -26,7 +26,7 @@ jobs:
 
     - name: Build Frontend
       run: |
-        cd src/Clients/livepager.frontend
+        cd Clients/livepager.frontend
         npm run install
         npm run build
 
