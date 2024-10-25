@@ -27,7 +27,7 @@ jobs:
     - name: Build Frontend
       run: |
         cd Clients/livepager.frontend
-        npm run install
+        npm install
         npm run build
 
     - name: Restore workloads
