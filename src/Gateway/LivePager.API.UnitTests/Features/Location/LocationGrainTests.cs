@@ -6,6 +6,7 @@
         public void Test()
         {
             Assert.True(false);
+            Assert.False(true);
         }
     }
 }
