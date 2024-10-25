@@ -1,0 +1,6 @@
+@LivePager.Gateway_HostAddress = http://localhost:5217
+
+GET {{LivePager.Gateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,11 @@
+﻿namespace LivePager.Gateway.Tests.Unit.Features.Location
+{
+    public class LocationGrainTests
+    {
+        [Fact]
+        public void Test()
+        {
+            Assert.True(false);
+        }
+    }
+}
