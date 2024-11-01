@@ -19,6 +19,7 @@ var siloHost = builder
     //.WithReference(azureQueue)
     .WithEnvironment("Orleans:Storage:LocationStore:ContainerName", "location-store")
     .WithEnvironment("Orleans:Storage:MissionStore:ContainerName", "mission-store")
+    .WithEnvironment("Orleans:Storage:MissionCollectionStore:ContainerName", "mission-collection")
     .WithEnvironment("Orleans:Storage:PubSubStore:ContainerName", "pub-sum")
     .WithEnvironment("Orleans:Storage:BlobConnectionString", azuriteConnection)
     .WithEnvironment("Orleans:Storage:QueueConnectionString", azuriteConnection);

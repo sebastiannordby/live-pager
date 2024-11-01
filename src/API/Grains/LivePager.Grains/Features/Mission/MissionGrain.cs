@@ -24,12 +24,19 @@ namespace LivePager.Grains.Features.Mission
             decimal latitude,
             decimal searchRadius)
         {
+            State.Id = this.GetGrainId().GetGuidKey();
             State.Name = name;
             State.Description = description;
             State.Longitude = longitude;
             State.Latitude = latitude;
             State.SearchRadius = searchRadius;
             await WriteStateAsync();
+
+            var missionCollectionGrain = GrainFactory
+                .GetGrain<IMissionCollectionGrain>("GlobalMissionCollection");
+
+            await missionCollectionGrain
+                .AddMission(State.Id, State.Name);
         }
 
         public async Task<MissionState> GetMissionStateAsync()

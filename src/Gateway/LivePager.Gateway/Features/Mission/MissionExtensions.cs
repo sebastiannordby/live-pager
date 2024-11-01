@@ -8,7 +8,9 @@
                 .MapGroup("/api/mission")
                 .WithOpenApi();
 
+            group.MapGet(string.Empty, MissionEndpoints.GetMissions);
             group.MapPost(string.Empty, MissionEndpoints.CreateMission);
+
 
             return webApp;
         }

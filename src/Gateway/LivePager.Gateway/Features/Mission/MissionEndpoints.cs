@@ -1,4 +1,5 @@
 ﻿using LivePager.Gateway.Features.Mission.Requests;
+using LivePager.Gateway.Features.Mission.Responses;
 using LivePager.Grains.Contracts.Mission;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,27 @@ namespace LivePager.Gateway.Features.Mission
                 searchRadius: request.SearchRadius);
 
             return TypedResults.Ok();
+        }
+
+        internal static async Task<Ok<GetMissionsResponse>> GetMissions(
+            [FromServices] IGrainFactory grainFactory)
+        {
+            var missionCollectionGrain = grainFactory
+                .GetGrain<IMissionCollectionGrain>("GlobalMissionCollection");
+
+            var missionNames = await missionCollectionGrain.GetMissions();
+
+            var missions = missionNames.Select(x => new GetMissionsResponseMissionDto()
+            {
+                Name = x
+            }).ToArray();
+
+            var response = new GetMissionsResponse()
+            {
+                Missions = missions
+            };
+
+            return TypedResults.Ok(response);
         }
     }
 }

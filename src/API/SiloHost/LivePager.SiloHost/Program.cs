@@ -35,6 +35,11 @@ builder.UseOrleans(siloBuilder =>
             options.ContainerName = orleansSettings["Storage:MissionStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
         })
+        .AddAzureBlobGrainStorage("MissionCollectionStore", options =>
+        {
+            options.ContainerName = orleansSettings["Storage:MissionCollectionStore:ContainerName"];
+            options.BlobServiceClient = new(blobStorageConnectionString);
+        })
         .AddAzureBlobGrainStorage("PubSubStore", options =>
         {
             options.ContainerName = orleansSettings["Storage:PubSubStore:ContainerName"];
