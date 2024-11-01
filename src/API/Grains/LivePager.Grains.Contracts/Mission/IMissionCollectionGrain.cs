@@ -3,6 +3,6 @@
     public interface IMissionCollectionGrain : IGrain, IGrainWithStringKey
     {
         Task AddMission(Guid id, string name);
-        Task<string[]> GetMissions();
+        Task<MissionDto[]> GetMissions();
     }
 }

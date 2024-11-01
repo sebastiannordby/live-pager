@@ -31,12 +31,17 @@ namespace LivePager.Gateway.Features.Mission
             var missionCollectionGrain = grainFactory
                 .GetGrain<IMissionCollectionGrain>("GlobalMissionCollection");
 
-            var missionNames = await missionCollectionGrain.GetMissions();
+            var missionNames = await missionCollectionGrain
+                .GetMissions();
 
-            var missions = missionNames.Select(x => new GetMissionsResponseMissionDto()
-            {
-                Name = x
-            }).ToArray();
+            var missions = missionNames.Select(mission =>
+                new GetMissionsResponseMissionDto()
+                {
+                    Name = mission.Name,
+                    Created = mission.Created,
+                    Updated = mission.Updated,
+                    Organization = mission.Organization
+                }).ToArray();
 
             var response = new GetMissionsResponse()
             {

@@ -18,13 +18,33 @@ namespace LivePager.Grains.Features.Mission
             await WriteStateAsync();
         }
 
-        public async Task<string[]> GetMissions()
+        public async Task<MissionDto[]> GetMissions()
         {
-            var missionNames = State.Missions
-                .Select(x => x.Value)
-                .ToArray();
+            var missions = new MissionDto[State.Missions.Count];
 
-            return await Task.FromResult(missionNames);
+            for (var i = 0; i < missions.Length; i++)
+            {
+                var missionGrain = GrainFactory
+                    .GetGrain<IMissionGrain>(State.Missions.ElementAt(i).Key);
+                var missionState = await missionGrain
+                    .GetMissionStateAsync();
+
+                var mission = new MissionDto()
+                {
+                    Name = missionState.Name,
+                    Description = missionState.Description,
+                    Latitude = missionState.Latitude,
+                    Longitude = missionState.Longitude,
+                    SearchRadius = missionState.SearchRadius,
+                    Organization = missionState.Organization,
+                    Created = missionState.CreatedDate,
+                    Updated = missionState.LastUpdatedDate,
+                };
+
+                missions[i] = mission;
+            }
+
+            return await Task.FromResult(missions);
         }
     }
 }

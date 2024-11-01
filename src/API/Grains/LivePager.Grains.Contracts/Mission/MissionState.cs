@@ -25,5 +25,14 @@ namespace LivePager.Grains.Contracts.Mission
 
         [Id(6)]
         public decimal SearchRadius { get; set; }
+
+        [Id(7)]
+        public string? Organization { get; set; }
+
+        [Id(8)]
+        public DateTime CreatedDate { get; set; }
+
+        [Id(9)]
+        public DateTime LastUpdatedDate { get; set; }
     }
 }

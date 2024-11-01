@@ -4,4 +4,7 @@ export type GetMissionsResponse = {
 
 export type GetMissionsResponseMissionDto = {
   name: string;
+  organization: string;
+  created: Date;
+  updated: Date;
 };

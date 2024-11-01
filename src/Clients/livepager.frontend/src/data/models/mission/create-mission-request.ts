@@ -4,4 +4,5 @@ export type CreateMissionRequest = {
   longitude: number;
   latitude: number;
   searchRadius: number;
+  organization: string | null;
 };

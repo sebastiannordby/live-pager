@@ -60,9 +60,9 @@ function App() {
           />
         </Routes>
       </main>
-      <footer className="flex justify-center items-center p-4 bg-gray-800 text-white">
+      {/* <footer className="flex justify-center items-center p-4 bg-gray-800 text-white">
         <p>© 2024 Live Tracker App</p>
-      </footer>
+      </footer> */}
     </BrowserRouter>
   );
 }
