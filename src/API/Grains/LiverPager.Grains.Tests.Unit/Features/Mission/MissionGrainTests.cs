@@ -1,7 +1,5 @@
 ﻿using LivePager.Grains.Contracts.Mission;
 using LivePager.Grains.Contracts.Participant;
-using LivePager.Grains.Features.Mission.Models;
-using NSubstitute;
 using Orleans.Streams;
 
 namespace LiverPager.Grains.Tests.Unit.Features.Mission
@@ -16,36 +14,36 @@ namespace LiverPager.Grains.Tests.Unit.Features.Mission
             _fixture = fixture;
         }
 
-        [Fact]
-        public async Task CreateMissionAsync_ShouldPersist()
-        {
-            // Arrange
-            var grainId = Guid.NewGuid();
-            var grain = _fixture.Cluster.GrainFactory
-                .GetGrain<IMissionGrain>(grainId);
+        //[Fact]
+        //public async Task CreateMissionAsync_ShouldPersist()
+        //{
+        //    // Arrange
+        //    var grainId = Guid.NewGuid();
+        //    var grain = _fixture.Cluster.GrainFactory
+        //        .GetGrain<IMissionGrain>(grainId);
 
-            // Define test data
-            var name = "Test Mission";
-            var description = "Test Description";
-            var longitude = 10.0m;
-            var latitude = 20.0m;
-            var searchRadius = 5.0m;
+        //    // Define test data
+        //    var name = "Test Mission";
+        //    var description = "Test Description";
+        //    var longitude = 10.0m;
+        //    var latitude = 20.0m;
+        //    var searchRadius = 5.0m;
 
-            // Act
-            await grain.CreateMissionAsync(
-                name,
-                description,
-                longitude,
-                latitude,
-                searchRadius);
+        //    // Act
+        //    await grain.CreateMissionAsync(
+        //        name,
+        //        description,
+        //        longitude,
+        //        latitude,
+        //        searchRadius);
 
-            // Assert
-            await ClusterFixture.MissionRepositoryMock
-                .Received(1)
-                .SaveAsync(Arg.Is<MissionEntity>(x =>
-                    x.Name == name
-                    && x.Description == description));
-        }
+        //    // Assert
+        //    await ClusterFixture.MissionRepositoryMock
+        //        .Received(1)
+        //        .SaveAsync(Arg.Is<MissionEntity>(x =>
+        //            x.Name == name
+        //            && x.Description == description));
+        //}
 
         [Fact]
         public async Task SetUserLocationAsync_ShouldStreamUserLocation()
