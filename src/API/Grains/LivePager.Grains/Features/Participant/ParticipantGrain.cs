@@ -1,4 +1,5 @@
 ﻿using LivePager.Grains.Contracts.Participant;
+using LivePager.Grains.Features.Participant.Repositories;
 using Orleans.Providers;
 
 namespace LivePager.Grains.Features.Participant
@@ -7,28 +8,28 @@ namespace LivePager.Grains.Features.Participant
     public class ParticipantGrain : Grain<LocationState>, IParticipantGrain
     {
         //private readonly IDisposable _persistenceTimer;
-        //private readonly ILocationRepository _locationRepository;
+        private readonly ILocationRepository _locationRepository;
 
-        //public ParticipantGrain(
-        //    ILocationRepository locationRepository) : base()
-        //{
-        //    _locationRepository = locationRepository;
-        //    _persistenceTimer = this.RegisterGrainTimer<object>(
-        //        PersistLocationAsync, null!, new Orleans.Runtime.GrainTimerCreationOptions()
-        //        {
-        //            DueTime = TimeSpan.Zero,
-        //            KeepAlive = true,
-        //            Period = TimeSpan.FromSeconds(5)
-        //        });
-        //}
+        public ParticipantGrain(
+            ILocationRepository locationRepository) : base()
+        {
+            _locationRepository = locationRepository;
+            //_persistenceTimer = this.RegisterGrainTimer<object>(
+            //    PersistLocationAsync, null!, new Orleans.Runtime.GrainTimerCreationOptions()
+            //    {
+            //        DueTime = TimeSpan.Zero,
+            //        KeepAlive = true,
+            //        Period = TimeSpan.FromSeconds(5)
+            //    });
+        }
 
-        //private async Task PersistLocationAsync(
-        //    object? arg,
-        //    CancellationToken cancellationToken)
-        //{
-        //    //await _locationRepository.SaveLocationsAsync(State.DataPoints);
-        //    State.DataPoints.Clear();
-        //}
+        private async Task PersistLocationAsync(
+            object? arg,
+            CancellationToken cancellationToken)
+        {
+            //await _locationRepository.SaveLocationsAsync(State.DataPoints);
+            State.DataPoints.Clear();
+        }
 
         public async ValueTask AddLocationAsync(
             LocationDataPoint dataPoint)

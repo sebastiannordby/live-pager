@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -10,13 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.1.2" />
-    <PackageReference Include="Microsoft.Orleans.Server" Version="8.2.0" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="8.2.0" />
+    <PackageReference Include="Microsoft.Orleans.Clustering.AzureStorage" Version="8.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="Scalar.AspNetCore" Version="1.2.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
@@ -25,5 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\API\Grains\LivePager.Grains.Contracts\LivePager.Grains.Contracts.csproj" />
+    <ProjectReference Include="..\..\Development\LivePager.Development.ServiceDefaults\LivePager.Development.ServiceDefaults.csproj" />
   </ItemGroup>
 </Project>

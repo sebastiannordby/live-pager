@@ -1,4 +1,5 @@
-﻿using LivePager.Grains.Features.Participant.Repositories;
+﻿using LivePager.Grains.Features.Mission.Repositories;
+using LivePager.Grains.Features.Participant.Repositories;
 using LivePager.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,8 @@ namespace LivePager.Infrastructure
             this IServiceCollection services)
         {
             return services
-                .AddTransient<ILocationRepository, LocationRepository>();
+                .AddSingleton<ILocationRepository, InMemoryLocationRepository>()
+                .AddSingleton<IMissionRepository, InMemoryMissionRepository>();
         }
     }
 }

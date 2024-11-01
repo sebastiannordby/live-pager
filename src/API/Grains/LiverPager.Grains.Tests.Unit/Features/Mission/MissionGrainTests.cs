@@ -1,7 +1,8 @@
 ﻿using LivePager.Grains.Contracts.Mission;
 using LivePager.Grains.Contracts.Participant;
+using LivePager.Grains.Features.Mission.Models;
+using NSubstitute;
 using Orleans.Streams;
-using System.Diagnostics;
 
 namespace LiverPager.Grains.Tests.Unit.Features.Mission
 {
@@ -16,7 +17,38 @@ namespace LiverPager.Grains.Tests.Unit.Features.Mission
         }
 
         [Fact]
-        public async Task ShouldStreamUserLocationOnUpdate()
+        public async Task CreateMissionAsync_ShouldPersist()
+        {
+            // Arrange
+            var grainId = Guid.NewGuid();
+            var grain = _fixture.Cluster.GrainFactory
+                .GetGrain<IMissionGrain>(grainId);
+
+            // Define test data
+            var name = "Test Mission";
+            var description = "Test Description";
+            var longitude = 10.0m;
+            var latitude = 20.0m;
+            var searchRadius = 5.0m;
+
+            // Act
+            await grain.CreateMissionAsync(
+                name,
+                description,
+                longitude,
+                latitude,
+                searchRadius);
+
+            // Assert
+            await ClusterFixture.MissionRepositoryMock
+                .Received(1)
+                .SaveAsync(Arg.Is<MissionEntity>(x =>
+                    x.Name == name
+                    && x.Description == description));
+        }
+
+        [Fact]
+        public async Task SetUserLocationAsync_ShouldStreamUserLocation()
         {
             // Arrange
             var streamProvider = _fixture.ClusterClient
@@ -34,18 +66,19 @@ namespace LiverPager.Grains.Tests.Unit.Features.Mission
             await stream.SubscribeAsync(observer);
 
             // Act
-            var location = new LocationDataPoint { Latitude = 1.23m, Longitude = 4.56m };
-            await grain.SetUserLocationAsync(location);
-            // Wait until the location data is received, with a timeout
-            var timeout = TimeSpan.FromSeconds(2);
-            var sw = Stopwatch.StartNew();
-            while (receivedLocations.Count == 0 && sw.Elapsed < timeout)
+            var location = new LocationDataPoint
             {
-                await Task.Delay(100); // Poll every 100 ms
-            }
+                Latitude = 1.23m,
+                Longitude = 4.56m
+            };
+            await grain
+                .SetUserLocationAsync(location);
+            await TimeSpan
+                .FromSeconds(2)
+                .WaitUntilCollectionHasEntries(receivedLocations);
 
             // Assert
-            Assert.Single(receivedLocations); // Check if a location was streamed
+            Assert.Single(receivedLocations);
             Assert.Equal(location.Latitude, receivedLocations[0].Latitude);
             Assert.Equal(location.Longitude, receivedLocations[0].Longitude);
         }

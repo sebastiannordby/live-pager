@@ -4,12 +4,13 @@ import {
   TileLayer,
   Marker,
   Circle,
-  useMapEvents
+  useMapEvents,
   // useMap,
 } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
 import { Button, Slider } from "@mui/material";
 import "leaflet/dist/leaflet.css";
+import { API } from "../../data/api";
 
 // Interface for LatLng position
 interface LatLng {
@@ -65,6 +66,16 @@ const CreateMission: React.FC = () => {
     return null;
   };
 
+  const executeCreateMission = async () => {
+    await API.mission.createMission({
+      name: "Sebastian",
+      description: "Test",
+      longitude: 1,
+      latitude: 2,
+      searchRadius: 3,
+    });
+  };
+
   if (isLoading) {
     return <label>Loading..</label>;
   }
@@ -106,7 +117,9 @@ const CreateMission: React.FC = () => {
         />
       </div>
 
-      <Button className="mt-2">Create Mission</Button>
+      <Button className="mt-2" onClick={executeCreateMission}>
+        Create Mission
+      </Button>
     </div>
   );
 };

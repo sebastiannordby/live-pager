@@ -10,6 +10,32 @@ namespace LivePager.Grains.Features.Mission
     {
         private IStreamProvider _streamProvider = null!;
         private IAsyncStream<LocationDataPoint> _stream = null!;
+        //private readonly IMissionRepository _missionRepository;
+
+        //public MissionGrain(IMissionRepository missionRepository)
+        //{
+        //    _missionRepository = missionRepository;
+        //}
+
+        public async Task CreateMissionAsync(
+            string name,
+            string? description,
+            decimal longitude,
+            decimal latitude,
+            decimal searchRadius)
+        {
+            State.Name = name;
+            State.Description = description;
+            State.Longitude = longitude;
+            State.Latitude = latitude;
+            State.SearchRadius = searchRadius;
+            await WriteStateAsync();
+        }
+
+        public async Task<MissionState> GetMissionStateAsync()
+        {
+            return await Task.FromResult(this.State);
+        }
 
         public override async Task OnActivateAsync(
             CancellationToken cancellationToken)

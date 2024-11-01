@@ -28,7 +28,7 @@ namespace LiverPager.Grains.Tests.Unit.Features.Location
                 Longitude = _faker.Random.Decimal(50)
             });
 
-            await _fixture.LocationRepositoryMock
+            await ClusterFixture.LocationRepositoryMock
                 .DidNotReceiveWithAnyArgs()
                 .SaveLocationsAsync(default!, default);
         }

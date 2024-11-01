@@ -1,5 +1,7 @@
+using Azure.Storage.Blobs;
 using LivePager.Gateway.Features.Authentication;
 using LivePager.Gateway.Features.Location;
+using LivePager.Gateway.Features.Mission;
 using LivePager.Gateway.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +15,8 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
+
+builder.AddLiverPagerServiceDefaults();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,8 +37,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "live-pager.com",
-        ValidAudience = "live-pager.com",
+        ValidIssuer = "livepager.no",
+        ValidAudience = "livepager.no",
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["Keys:Authentication:Secret"]!))
     };
@@ -63,13 +67,21 @@ builder.Services.AddCors(x =>
     });
 });
 
-if (builder.Environment.IsDevelopment())
+builder.Services.AddOrleansClient(clientBuilder =>
 {
-    builder.Services.AddOrleansClient(clientBuilder =>
+    var blobStorageConnectionString = builder.Configuration["Orleans:Storage:BlobConnectionString"];
+
+    clientBuilder.ConfigureServices(services =>
     {
-        clientBuilder.UseLocalhostClustering();
+        services.AddSingleton(new BlobServiceClient(blobStorageConnectionString));
     });
-}
+
+    clientBuilder.UseAzureStorageClustering(options =>
+    {
+        options.TableName = "LiverPagerClusterTable";
+        options.TableServiceClient = new(blobStorageConnectionString);
+    });
+});
 
 var app = builder.Build();
 
@@ -85,5 +97,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseParticipantFeature();
+app.UseMissionEndpoints();
 app.UseAuthenticationFeature();
 app.Run();

@@ -10,6 +10,7 @@ namespace LivePager.Gateway.Features.Authentication
         {
             return services
                 .AddTransient<CreateUserService>()
+                .AddSingleton<PasswordHasher>()
                 .AddTransient<AuthenticationService>();
         }
 

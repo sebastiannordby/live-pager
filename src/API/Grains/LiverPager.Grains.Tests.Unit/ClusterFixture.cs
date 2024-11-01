@@ -1,5 +1,7 @@
-﻿using LivePager.Grains.Features.Participant.Repositories;
+﻿using LivePager.Grains.Features.Mission.Repositories;
+using LivePager.Grains.Features.Participant.Repositories;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Orleans.TestingHost;
 
@@ -7,7 +9,8 @@ namespace LiverPager.Grains.Tests.Unit
 {
     public class ClusterFixture : IDisposable
     {
-        public ILocationRepository LocationRepositoryMock { get; } = Substitute.For<ILocationRepository>();
+        public static ILocationRepository LocationRepositoryMock { get; } = Substitute.For<ILocationRepository>();
+        public static IMissionRepository MissionRepositoryMock { get; } = Substitute.For<IMissionRepository>();
 
         public TestCluster Cluster { get; init; }
         public IClusterClient ClusterClient => Cluster.Client;
@@ -22,27 +25,35 @@ namespace LiverPager.Grains.Tests.Unit
             Cluster.Deploy();
         }
 
-
         public void Dispose()
         {
             Cluster.StopAllSilos();
+            Cluster.Dispose();
         }
 
         private class TestSiloConfigurations : ISiloConfigurator
         {
-            public void Configure(ISiloBuilder siloBuilder)
+            public void Configure(
+                ISiloBuilder siloBuilder)
             {
                 siloBuilder
                     .AddMemoryGrainStorage("LocationStore")
                     .AddMemoryGrainStorage("MissionStore")
                     .AddMemoryGrainStorage("PubSubStore")
-                    .AddMemoryStreams("DefaultStreamProvider");
+                    .AddMemoryStreams("DefaultStreamProvider")
+                    .ConfigureServices(services =>
+                    {
+                        services.AddSingleton(LocationRepositoryMock);
+                        services.AddSingleton(MissionRepositoryMock);
+                    });
             }
         }
 
         private class ClientConfigurator : IClientBuilderConfigurator
         {
-            public void Configure(IConfiguration configuration, IClientBuilder clientBuilder)
+            public void Configure(
+                IConfiguration configuration,
+                IClientBuilder clientBuilder)
             {
                 clientBuilder.AddMemoryStreams("DefaultStreamProvider"); // Add stream provider to client
             }

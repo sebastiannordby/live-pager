@@ -1,9 +1,9 @@
 ﻿using LivePager.Grains.Contracts.Participant;
-using LivePager.Grains.Features.Location.Repositories;
+using LivePager.Grains.Features.Participant.Repositories;
 
 namespace LivePager.Infrastructure.Repositories
 {
-    internal class LocationRepository : ILocationRepository
+    internal class InMemoryLocationRepository : ILocationRepository
     {
         public async Task SaveLocationsAsync(
            IEnumerable<LocationDataPoint> dataPoints,

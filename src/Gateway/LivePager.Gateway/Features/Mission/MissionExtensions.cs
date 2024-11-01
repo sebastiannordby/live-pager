@@ -1,0 +1,16 @@
+﻿namespace LivePager.Gateway.Features.Mission
+{
+    internal static class MissionExtensions
+    {
+        internal static WebApplication UseMissionEndpoints(this WebApplication webApp)
+        {
+            var group = webApp
+                .MapGroup("/api/mission")
+                .WithOpenApi();
+
+            group.MapPost(string.Empty, MissionEndpoints.CreateMission);
+
+            return webApp;
+        }
+    }
+}

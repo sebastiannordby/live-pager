@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{295CADAF-C39
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiverPager.Grains.Tests.Unit", "API\Grains\LiverPager.Grains.Tests.Unit\LiverPager.Grains.Tests.Unit.csproj", "{65E139BD-4944-48C4-B527-3C3CCB06F29E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiverPager.SiloHost.Tests.Integration", "API\SiloHost\LiverPager.SiloHost.Tests.Integration\LiverPager.SiloHost.Tests.Integration.csproj", "{589DD4F1-940F-4ECD-B7D5-280A25E68DD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{65E139BD-4944-48C4-B527-3C3CCB06F29E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65E139BD-4944-48C4-B527-3C3CCB06F29E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65E139BD-4944-48C4-B527-3C3CCB06F29E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{589DD4F1-940F-4ECD-B7D5-280A25E68DD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{589DD4F1-940F-4ECD-B7D5-280A25E68DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{589DD4F1-940F-4ECD-B7D5-280A25E68DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{589DD4F1-940F-4ECD-B7D5-280A25E68DD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{425046B2-3E5D-4CFE-900C-11F6A51CCF7B} = {2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}
 		{609E48F8-90DE-458A-876D-02B16AC019E9} = {2CB13004-B5A2-4889-8F8A-0C6FDE5384CC}
 		{65E139BD-4944-48C4-B527-3C3CCB06F29E} = {37DEA68D-B28B-419E-B4B0-BBF9076D3B37}
+		{589DD4F1-940F-4ECD-B7D5-280A25E68DD2} = {F793F7AA-4E58-444C-BE31-390AF237C6C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB0083DF-A959-4BD3-9571-C65A744221A1}
