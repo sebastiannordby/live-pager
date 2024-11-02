@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace LivePager.Gateway.Features.Mission.Responses
+namespace LivePager.Gateway.Features.Mission.GetMissions
 {
     [DataContract]
     public class GetMissionsResponse
@@ -12,6 +12,9 @@ namespace LivePager.Gateway.Features.Mission.Responses
     [DataContract]
     public class GetMissionsResponseMissionDto
     {
+        [DataMember]
+        public required Guid Id { get; set; }
+
         [DataMember]
         public required string Name { get; init; }
 

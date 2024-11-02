@@ -27,5 +27,8 @@ namespace LivePager.Grains.Contracts.Mission
 
         [Id(7)]
         public string? Organization { get; set; }
+
+        [Id(8)]
+        public Guid Id { get; set; }
     }
 }

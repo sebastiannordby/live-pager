@@ -1,8 +1,9 @@
-﻿using DotNet.Testcontainers.Builders;
+﻿using Azure.Storage.Blobs;
+using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
+using LivePager.Grains.Contracts;
 using LivePager.SiloHost;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Orleans.Configuration;
 
 namespace LiverPager.SiloHost.Tests.Integration
 {
@@ -17,7 +18,7 @@ namespace LiverPager.SiloHost.Tests.Integration
         public IntegrationTestsFixture()
         {
             _azuriteContainer = new ContainerBuilder()
-                .WithImage("mcr.microsoft.com/azure-storage/azurite:3.18.0")
+                .WithImage("mcr.microsoft.com/azure-storage/azurite")
                 .WithName("azurite_test_container")
                 .WithExposedPort(10000)  // Blob Service
                 .WithExposedPort(10001)  // Queue Service
@@ -27,29 +28,55 @@ namespace LiverPager.SiloHost.Tests.Integration
                 .Build();
         }
 
-        public async Task InitializeAsync()
+        async Task IAsyncLifetime.InitializeAsync()
         {
             await _azuriteContainer.StartAsync();
 
-            // Override the Blob Storage connection string in your app settings
-            //var blobStorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xqyb0ve7h1v9hLk3D9XbCFUySDj/dSMFfoAzurite;BlobEndpoint=http://localhost:10000/devstoreaccount1;";
+            var blobStorageConnectionString = "UseDevelopmentStorage=true";
 
-            var blobStorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xqyb0ve7h1v9hLk3D9XbCFUySDj/dSMFfoAzurite;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;";
+            Environment.SetEnvironmentVariable("Orleans:Storage:LocationStore:ContainerName", "location-store");
+            Environment.SetEnvironmentVariable("Orleans:Storage:MissionStore:ContainerName", "mission-store");
+            Environment.SetEnvironmentVariable("Orleans:Storage:MissionCollectionStore:ContainerName", "mission-collection");
+            Environment.SetEnvironmentVariable("Orleans:Storage:PubSubStore:ContainerName", "pub-sub");
+            Environment.SetEnvironmentVariable("Orleans:Storage:BlobConnectionString", blobStorageConnectionString);
+            Environment.SetEnvironmentVariable("Orleans:Storage:QueueConnectionString", blobStorageConnectionString);
 
-            Environment.SetEnvironmentVariable("Orleans:Storage:ConnectionString", blobStorageConnectionString);
+            var siloHostConfigBuilder = new ConfigurationBuilder();
+            siloHostConfigBuilder.AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("Orleans:Storage:LocationStore:ContainerName", "location-store"),
+                    new KeyValuePair<string, string>("Orleans:Storage:MissionStore:ContainerName", "mission-store"),
+                    new KeyValuePair<string, string>("Orleans:Storage:MissionCollectionStore:ContainerName", "mission-collection"),
+                    new KeyValuePair<string, string>("Orleans:Storage:PubSubStore:ContainerName", "pub-sub"),
+                    new KeyValuePair<string, string>("Orleans:Storage:BlobConnectionString", blobStorageConnectionString),
+                    new KeyValuePair<string, string>("Orleans:Storage:QueueConnectionString", blobStorageConnectionString)
+                });
+            var siloHostConfiguration = siloHostConfigBuilder.Build();
+
+            var webAppFactory = this.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureAppConfiguration((context, config) =>
+                {
+                    config.AddConfiguration(siloHostConfiguration);
+                });
+            });
+
+            // Ensure the silo is started and fully initialized
+            await webAppFactory.Services.GetRequiredService<IHost>().StartAsync();
 
             _clusterClientHost = Host.CreateDefaultBuilder([])
                .UseOrleansClient((context, client) =>
                {
-                   client.Configure<ClusterOptions>(options =>
-                   {
-                       //options.ClusterId = "my-first-cluster";
-                       //options.ServiceId = "MyOrleansService";
-                   })
-                   .UseAzureStorageClustering(options =>
-                    {
-                        options.TableServiceClient = new Azure.Data.Tables.TableServiceClient(blobStorageConnectionString);
-                    });
+                   client
+                       .ConfigureServices(services =>
+                       {
+                           services.AddSingleton(new BlobServiceClient(blobStorageConnectionString));
+                       })
+                       .UseAzureStorageClustering(options =>
+                        {
+                            options.TableName = GrainStorageConstants.LiverPagerClusterTable;
+                            options.TableServiceClient = new Azure.Data.Tables.TableServiceClient(blobStorageConnectionString);
+                        });
                })
                .UseConsoleLifetime()
                .Build();
@@ -57,41 +84,19 @@ namespace LiverPager.SiloHost.Tests.Integration
             await _clusterClientHost.StartAsync();
         }
 
-        public async Task DisposeAsync()
+        async Task IAsyncLifetime.DisposeAsync()
         {
-            await _azuriteContainer.StopAsync();
-            await _azuriteContainer.DisposeAsync();
-            await _clusterClientHost.StopAsync();
-            _clusterClientHost.Dispose();
-        }
-
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder.ConfigureAppConfiguration((context, config) =>
+            if (_azuriteContainer is not null)
             {
-                // Remove existing configurations and add custom ones for testing
-                config.Sources.Clear();
+                await _azuriteContainer.StopAsync();
+                await _azuriteContainer.DisposeAsync();
+            }
 
-                // Add appsettings configuration for tests
-                config.AddJsonFile("appsettings.Test.json", optional: false);
-
-                // Add any environment variables if needed for the test environment
-                config.AddEnvironmentVariables();
-
-                // Optionally add in-memory configuration if you want to set specific values dynamically
-                // config.AddInMemoryCollection(new[]
-                // {
-                //     new KeyValuePair<string, string>("Orleans:Storage:ProviderName", "AzureBlob"),
-                //     new KeyValuePair<string, string>("Orleans:Storage:ConnectionString",
-                //         "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xqyb0ve7h1v9hLk3D9XbCFUyGSDj/dSMFfoAzurite;BlobEndpoint=http://localhost:10000/devstoreaccount1;")
-                // });
-            });
-
-            builder.ConfigureServices(services =>
+            if (_clusterClientHost is not null)
             {
-                // Register additional test services or replace existing services here if needed
-                // For example, you can replace a service with a mock
-            });
+                await _clusterClientHost.StopAsync();
+                _clusterClientHost.Dispose();
+            }
         }
     }
 }

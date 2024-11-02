@@ -3,6 +3,7 @@ using LivePager.Gateway.Features.Authentication;
 using LivePager.Gateway.Features.Location;
 using LivePager.Gateway.Features.Mission;
 using LivePager.Gateway.Infrastructure;
+using LivePager.Grains.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -78,7 +79,7 @@ builder.Services.AddOrleansClient(clientBuilder =>
 
     clientBuilder.UseAzureStorageClustering(options =>
     {
-        options.TableName = "LiverPagerClusterTable";
+        options.TableName = GrainStorageConstants.LiverPagerClusterTable;
         options.TableServiceClient = new(blobStorageConnectionString);
     });
 });

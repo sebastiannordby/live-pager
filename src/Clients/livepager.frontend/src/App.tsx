@@ -5,31 +5,21 @@ import Home from "./Home";
 import LoginPage from "./LoginPage";
 import ProtectedRoute from "./common/auth/protected-route";
 import CreateMission from "./features/mission/CreateMissionPage";
+import Footer from "./Footer";
+import EnterMissionPage from "./features/mission/EnterMissionPage";
+import { ActiveMissionPage } from "./features/mission/ActiveMissionPage";
 
 function App() {
   return (
     <BrowserRouter>
       <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
         <div className="flex items-center">
-          <h1 className="ml-4 text-2xl">Live Pager</h1>
+          <Link to="/" className="text-white">
+            <h1 className="ml-4 text-2xl">Live Pager</h1>
+          </Link>
         </div>
         <nav>
           <ul className="flex space-x-4">
-            <li>
-              <Link to="/" className="text-white hover:underline">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/tracking" className="text-white hover:underline">
-                Tracking
-              </Link>
-            </li>
-            <li>
-              <Link to="/mission/create" className="text-white hover:underline">
-                Create Mission
-              </Link>
-            </li>
             <li>
               <Link to="/login" className="text-white hover:underline">
                 Login
@@ -41,7 +31,30 @@ function App() {
       <main className="flex flex-col h-full">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/mission/create" element={<CreateMission />} />
+          <Route
+            path="/mission/create"
+            element={
+              <ProtectedRoute>
+                <CreateMission />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mission/active"
+            element={
+              <ProtectedRoute>
+                <ActiveMissionPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mission/enter/:id"
+            element={
+              <ProtectedRoute>
+                <EnterMissionPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/"
             element={
@@ -60,9 +73,7 @@ function App() {
           />
         </Routes>
       </main>
-      {/* <footer className="flex justify-center items-center p-4 bg-gray-800 text-white">
-        <p>© 2024 Live Tracker App</p>
-      </footer> */}
+      <Footer />
     </BrowserRouter>
   );
 }

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace LivePager.Gateway.Features.Mission.Requests
+namespace LivePager.Gateway.Features.Mission.CreateMission
 {
     [DataContract]
     public sealed class CreateMissionRequest

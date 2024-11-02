@@ -1,14 +1,15 @@
-﻿using LivePager.Gateway.Features.Mission.Requests;
-using LivePager.Gateway.Features.Mission.Responses;
+﻿using LivePager.Gateway.Features.Mission.CreateMission;
+using LivePager.Gateway.Features.Mission.FindMission;
+using LivePager.Gateway.Features.Mission.GetMissions;
 using LivePager.Grains.Contracts.Mission;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LivePager.Gateway.Features.Mission
 {
-    public class MissionEndpoints
+    internal class MissionEndpoints
     {
-        public static async Task<Ok> CreateMission(
+        internal static async Task<Ok> CreateMission(
             [FromBody] CreateMissionRequest request,
             [FromServices] IGrainFactory grainFactory)
         {
@@ -25,6 +26,30 @@ namespace LivePager.Gateway.Features.Mission
             return TypedResults.Ok();
         }
 
+        internal static async Task<Ok<FindMissionResponse>> FindMission(
+            [FromRoute] Guid missionId,
+            [FromServices] IGrainFactory grainFactory)
+        {
+            var missionGrain = grainFactory
+                .GetGrain<IMissionGrain>(missionId);
+
+            var missionState = await missionGrain
+                .GetMissionStateAsync();
+
+            var response = new FindMissionResponse()
+            {
+                Id = missionId,
+                Name = missionState.Name,
+                Description = missionState.Description,
+                Organization = missionState.Organization,
+                Longitude = missionState.Longitude,
+                Latitude = missionState.Latitude,
+                SearchRadius = missionState.SearchRadius
+            };
+
+            return TypedResults.Ok(response);
+        }
+
         internal static async Task<Ok<GetMissionsResponse>> GetMissions(
             [FromServices] IGrainFactory grainFactory)
         {
@@ -37,6 +62,7 @@ namespace LivePager.Gateway.Features.Mission
             var missions = missionNames.Select(mission =>
                 new GetMissionsResponseMissionDto()
                 {
+                    Id = mission.Id,
                     Name = mission.Name,
                     Created = mission.Created,
                     Updated = mission.Updated,

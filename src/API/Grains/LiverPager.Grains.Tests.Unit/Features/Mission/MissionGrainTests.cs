@@ -1,4 +1,5 @@
-﻿using LivePager.Grains.Contracts.Mission;
+﻿using LivePager.Grains.Contracts;
+using LivePager.Grains.Contracts.Mission;
 using LivePager.Grains.Contracts.Participant;
 using Orleans.Streams;
 
@@ -14,36 +15,38 @@ namespace LiverPager.Grains.Tests.Unit.Features.Mission
             _fixture = fixture;
         }
 
-        //[Fact]
-        //public async Task CreateMissionAsync_ShouldPersist()
-        //{
-        //    // Arrange
-        //    var grainId = Guid.NewGuid();
-        //    var grain = _fixture.Cluster.GrainFactory
-        //        .GetGrain<IMissionGrain>(grainId);
+        [Fact]
+        public async Task CreateMissionAsync_ShouldPersistToCollection()
+        {
+            // Arrange
+            var grainId = Guid.NewGuid();
 
-        //    // Define test data
-        //    var name = "Test Mission";
-        //    var description = "Test Description";
-        //    var longitude = 10.0m;
-        //    var latitude = 20.0m;
-        //    var searchRadius = 5.0m;
+            var missionGrain = _fixture.Cluster.GrainFactory
+                .GetGrain<IMissionGrain>(grainId);
+            var missionCollectionGrain = _fixture.Cluster.GrainFactory
+                .GetGrain<IMissionCollectionGrain>(
+                    GrainStorageConstants.GlobalMissionCollection);
 
-        //    // Act
-        //    await grain.CreateMissionAsync(
-        //        name,
-        //        description,
-        //        longitude,
-        //        latitude,
-        //        searchRadius);
+            // Define test data
+            var name = "Test Mission";
+            var description = "Test Description";
+            var longitude = 10.0m;
+            var latitude = 20.0m;
+            var searchRadius = 5.0m;
 
-        //    // Assert
-        //    await ClusterFixture.MissionRepositoryMock
-        //        .Received(1)
-        //        .SaveAsync(Arg.Is<MissionEntity>(x =>
-        //            x.Name == name
-        //            && x.Description == description));
-        //}
+            // Act
+            await missionGrain.CreateMissionAsync(
+                name,
+                description,
+                longitude,
+                latitude,
+                searchRadius);
+
+            // Assert
+            var missions = await missionCollectionGrain.GetMissions();
+
+            Assert.Contains(missions, x => x.Name == name);
+        }
 
         [Fact]
         public async Task SetUserLocationAsync_ShouldStreamUserLocation()

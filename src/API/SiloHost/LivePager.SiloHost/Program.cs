@@ -1,20 +1,25 @@
 using Azure.Storage.Blobs;
+using LivePager.Grains.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
+var orleansSettings = builder.Configuration.GetSection("Orleans");
+var blobStorageConnectionString = orleansSettings["Storage:BlobConnectionString"];
+var queueConnectionString = orleansSettings["Storage:QueueConnectionString"];
 
 builder.AddLiverPagerServiceDefaults();
 builder.UseOrleans(siloBuilder =>
 {
-    var orleansSettings = builder.Configuration.GetSection("Orleans");
-    var blobStorageConnectionString = orleansSettings["Storage:BlobConnectionString"];
-    var queueConnectionString = orleansSettings["Storage:QueueConnectionString"];
-
     siloBuilder.UseAzureStorageClustering(opt =>
     {
-        opt.TableName = "LiverPagerClusterTable";
+        opt.TableName = GrainStorageConstants.LiverPagerClusterTable;
         opt.TableServiceClient = new(blobStorageConnectionString);
     });
-
 
     siloBuilder
         .ConfigureServices(services =>
@@ -25,26 +30,26 @@ builder.UseOrleans(siloBuilder =>
                 opt.BlobServiceClient = new BlobServiceClient(blobStorageConnectionString);
             });
         })
-        .AddAzureBlobGrainStorage("LocationStore", options =>
+        .AddAzureBlobGrainStorage(GrainStorageConstants.LocationStore, options =>
         {
             options.ContainerName = orleansSettings["Storage:LocationStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
         })
-        .AddAzureBlobGrainStorage("MissionStore", options =>
+        .AddAzureBlobGrainStorage(GrainStorageConstants.MissionStore, options =>
         {
             options.ContainerName = orleansSettings["Storage:MissionStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
         })
-        .AddAzureBlobGrainStorage("MissionCollectionStore", options =>
+        .AddAzureBlobGrainStorage(GrainStorageConstants.MissionCollectionStore, options =>
         {
             options.ContainerName = orleansSettings["Storage:MissionCollectionStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
         })
-        .AddAzureBlobGrainStorage("PubSubStore", options =>
+        .AddAzureBlobGrainStorage(GrainStorageConstants.PubSubStore, options =>
         {
             options.ContainerName = orleansSettings["Storage:PubSubStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
-        }).AddAzureQueueStreams("DefaultStreamProvider", configurator =>
+        }).AddAzureQueueStreams(GrainStorageConstants.DefaultStreamProvider, configurator =>
         {
             configurator.ConfigureAzureQueue(
                 ob => ob.Configure(options =>
@@ -52,7 +57,7 @@ builder.UseOrleans(siloBuilder =>
                     options.QueueServiceClient = new(queueConnectionString);
                     options.QueueNames = new List<string>
                     {
-                            "yourprefix-azurequeueprovider-0"
+                        "yourprefix-azurequeueprovider-0"
                     };
                 }));
             configurator.ConfigureCacheSize(1024);

@@ -3,6 +3,7 @@ export type GetMissionsResponse = {
 };
 
 export type GetMissionsResponseMissionDto = {
+  id: string;
   name: string;
   organization: string;
   created: Date;

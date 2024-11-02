@@ -39,6 +39,7 @@ namespace LivePager.Grains.Features.Mission
                     Organization = missionState.Organization,
                     Created = missionState.CreatedDate,
                     Updated = missionState.LastUpdatedDate,
+                    Id = missionState.Id
                 };
 
                 missions[i] = mission;

@@ -1,4 +1,5 @@
-﻿using LivePager.Grains.Features.Mission.Repositories;
+﻿using LivePager.Grains.Contracts;
+using LivePager.Grains.Features.Mission.Repositories;
 using LivePager.Grains.Features.Participant.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,10 +38,11 @@ namespace LiverPager.Grains.Tests.Unit
                 ISiloBuilder siloBuilder)
             {
                 siloBuilder
-                    .AddMemoryGrainStorage("LocationStore")
-                    .AddMemoryGrainStorage("MissionStore")
-                    .AddMemoryGrainStorage("PubSubStore")
-                    .AddMemoryStreams("DefaultStreamProvider")
+                    .AddMemoryGrainStorage(GrainStorageConstants.LocationStore)
+                    .AddMemoryGrainStorage(GrainStorageConstants.MissionStore)
+                    .AddMemoryGrainStorage(GrainStorageConstants.PubSubStore)
+                    .AddMemoryGrainStorage(GrainStorageConstants.MissionCollectionStore)
+                    .AddMemoryStreams(GrainStorageConstants.DefaultStreamProvider)
                     .ConfigureServices(services =>
                     {
                         services.AddSingleton(LocationRepositoryMock);
