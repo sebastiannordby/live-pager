@@ -11,3 +11,20 @@ Real-Time Location Tracking: Track the location of all users participating in th
 Search Coordination: Collaborate with others by visually seeing areas that have been covered and which team members are currently searching.
 Mission Overview: A centralized view of the mission's progress, showing all active participants, search areas, and coverage.
 LivePager is ideal for use in search-and-rescue operations, organized search missions for missing persons, pets, or other situations that require team-based location tracking.
+
+## How do i run this project?
+
+### Azurite
+This application is made to run on Azure and to avoid local development directly against Azure you have to use Azurite.
+https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage
+
+Pull the Azurite-image:
+```
+docker pull mcr.microsoft.com/azure-storage/azurite
+```
+
+Run Azurite:
+```
+docker run --name liverpager-azurite -p 10000:10000 -p 10001:10001 -p 10002:10002 \
+    mcr.microsoft.com/azure-storage/azurite
+```
