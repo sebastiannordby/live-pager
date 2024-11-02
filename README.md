@@ -28,3 +28,14 @@ Run Azurite:
 docker run --name liverpager-azurite -p 10000:10000 -p 10001:10001 -p 10002:10002 \
     mcr.microsoft.com/azure-storage/azurite
 ```
+
+### Development
+To avoid having to start all services manually i applied the use of .NET Aspire, this acts as a container orchestration tool, just like Docker Compose. 
+
+You can find the guide for how to install .NET Aspire here: https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/setup-tooling?tabs=windows&pivots=visual-studio
+
+When opening the solution in Visual Studio: 
+- Navigate to the Development folder and then LivePager.Development.AppHost, set this as your startup project
+- Make sure Azurite is running 
+- Start
+- Aspire Dashboard will show up with an overview of the resources/services/applications available
