@@ -2,8 +2,8 @@
 {
     public interface IParticipantGrain : IGrainWithStringKey
     {
-        ValueTask AddLocationAsync(
-            LocationDataPoint dataPoint);
-        ValueTask<LocationDataPoint[]> GetDataPointsAsync();
+        Task AddLocationAsync(LocationDataPoint dataPoint);
+
+        Task<LocationDataPoint[]> GetDataPointsAsync();
     }
 }

@@ -25,10 +25,14 @@
             }
 
             result.Success = true;
-            result.Username = command.Username;
-            result.Email = command.Email;
-            result.HashedPassword = _passwordHasher
-                .HashPassword(command.Password);
+            result.User = new()
+            {
+                Username = command.Username,
+                DisplayName = command.DisplayName,
+                Email = command.Email,
+                HashedPassword = _passwordHasher
+                    .HashPassword(command.Password)
+            };
 
             return await Task.FromResult(result);
         }

@@ -1,5 +1,6 @@
-﻿using LivePager.Gateway.Features.Authentication.CreateUser;
+﻿using LivePager.Gateway.Infrastructure;
 using LivePager.Gateway.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -7,14 +8,12 @@ namespace LivePager.Gateway.Features.Users
 {
     public sealed class AuthenticationService
     {
-        public static List<User> Users = new List<User>
+        public LiverPagerDbContext _dbContext;
+
+        public AuthenticationService(LiverPagerDbContext dbContext)
         {
-            new User
-            {
-                Username = "user1",
-                PasswordHash = HashPassword("password1")
-            }
-        };
+            _dbContext = dbContext;
+        }
 
         private static string HashPassword(
             string password)
@@ -37,16 +36,12 @@ namespace LivePager.Gateway.Features.Users
             CancellationToken cancellationToken = default)
         {
             var hashedPassword = HashPassword(password);
-            var user = Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == hashedPassword);
+            var user = await _dbContext.Users
+                .Where(x => x.Username == username)
+                .Where(x => x.PasswordHash == hashedPassword)
+                .FirstOrDefaultAsync(cancellationToken);
 
-            return await Task.FromResult(user);
-        }
-
-        public async Task<User?> CreateUserAsync(
-            CreateUserRequest request,
-            CancellationToken cancellationToken = default)
-        {
-            return null;
+            return user;
         }
     }
 }

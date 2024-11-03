@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace LivePager.Gateway.Features.Mission.GetMissions
+namespace LivePager.Gateway.Features.Mission.Contracts.GetMissions
 {
     [DataContract]
     public class GetMissionsResponse

@@ -1,5 +1,10 @@
 import axiosInstance from "./axios";
-import { LoginRequest, LoginResponse } from "./models/authentication/";
+import {
+  CreateUserRequest,
+  CreateUserResponse,
+  LoginRequest,
+  LoginResponse,
+} from "./models/authentication/";
 import {
   FindMissionResponse,
   CreateMissionRequest,
@@ -14,6 +19,17 @@ async function login(request: LoginRequest): Promise<LoginResponse> {
   );
 
   return response.data as LoginResponse;
+}
+
+async function createUser(
+  request: CreateUserRequest
+): Promise<CreateUserResponse> {
+  const response = await axiosInstance.post<CreateUserResponse>(
+    "/api/authentication/create-user",
+    request
+  );
+
+  return response.data as CreateUserResponse;
 }
 
 async function createMission(request: CreateMissionRequest): Promise<void> {
@@ -37,6 +53,7 @@ export async function getMissions(): Promise<GetMissionsResponse> {
 export const API = {
   authentication: {
     login,
+    createUser,
   },
   mission: {
     getMissions,

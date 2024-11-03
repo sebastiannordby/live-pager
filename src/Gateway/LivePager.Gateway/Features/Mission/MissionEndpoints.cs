@@ -1,6 +1,7 @@
-﻿using LivePager.Gateway.Features.Mission.CreateMission;
-using LivePager.Gateway.Features.Mission.FindMission;
-using LivePager.Gateway.Features.Mission.GetMissions;
+﻿using LivePager.Gateway.Features.Mission.Contracts.CreateMission;
+using LivePager.Gateway.Features.Mission.Contracts.FindMission;
+using LivePager.Gateway.Features.Mission.Contracts.GetMissions;
+using LivePager.Gateway.Features.Mission.Contracts.RegisterLocation;
 using LivePager.Grains.Contracts.Mission;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,23 @@ namespace LivePager.Gateway.Features.Mission
 {
     internal class MissionEndpoints
     {
+        internal static async Task<Ok> RegisterLocationDataPoint(
+            [FromBody] RegisterParticipantLocationRequest request,
+            [FromServices] IGrainFactory grainFactory,
+            CancellationToken cancellationToken)
+        {
+            var missionGrain = grainFactory
+                .GetGrain<IMissionGrain>(request.MissionId);
+
+            await missionGrain.SetUserLocationAsync(new()
+            {
+                Latitude = request.Latitude,
+                Longitude = request.Longitude,
+            });
+
+            return TypedResults.Ok();
+        }
+
         internal static async Task<Ok> CreateMission(
             [FromBody] CreateMissionRequest request,
             [FromServices] IGrainFactory grainFactory)

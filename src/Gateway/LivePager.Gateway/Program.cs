@@ -1,6 +1,5 @@
 using Azure.Storage.Blobs;
 using LivePager.Gateway.Features.Authentication;
-using LivePager.Gateway.Features.Location;
 using LivePager.Gateway.Features.Mission;
 using LivePager.Gateway.Infrastructure;
 using LivePager.Grains.Contracts;
@@ -22,7 +21,7 @@ builder.AddLiverPagerServiceDefaults();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAuthenticationFeature();
 
 builder.Services.AddAuthentication(options =>
@@ -97,7 +96,6 @@ app.UseCors("frontend");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseParticipantFeature();
 app.UseMissionEndpoints();
 app.UseAuthenticationFeature();
 app.Run();

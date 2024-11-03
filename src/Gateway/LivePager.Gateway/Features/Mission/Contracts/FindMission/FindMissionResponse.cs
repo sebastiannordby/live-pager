@@ -1,4 +1,4 @@
-﻿namespace LivePager.Gateway.Features.Mission.FindMission
+﻿namespace LivePager.Gateway.Features.Mission.Contracts.FindMission
 {
     public class FindMissionResponse
     {
