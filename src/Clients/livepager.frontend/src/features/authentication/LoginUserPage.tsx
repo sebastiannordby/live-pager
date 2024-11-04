@@ -1,9 +1,10 @@
 // src/features/auth/LoginPage.jsx
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API } from "./data/api";
+import { API } from "../../data/api";
+import { Button, TextField } from "@mui/material";
 
-function LoginPage() {
+export default function LoginUserPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,33 +31,49 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h2 className="text-3xl font-bold mb-4">Login</h2>
+    <div className="flex flex-col items-center justify-center">
+      <h2 className="text-xl text-black font-bold mb-4">Login</h2>
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleLogin} className="flex flex-col space-y-4">
-        <input
-          type="text"
-          placeholder="Username"
+        <TextField
+          label="Username"
+          variant="outlined"
+          autoComplete="off"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded"
+          fullWidth
+          margin="normal"
         />
-        <input
+        <TextField
+          label="Password"
           type="password"
-          placeholder="Password"
+          variant="outlined"
+          autoComplete="off"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded"
+          fullWidth
+          margin="normal"
         />
-        <button
+        <Button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
         >
           Login
-        </button>
+        </Button>
+        <Button
+          type="button"
+          variant="contained"
+          color="secondary"
+          fullWidth
+          href="/authentication/register"
+          sx={{ mt: 0 }}
+        >
+          Dont have a user? Register here
+        </Button>
       </form>
     </div>
   );
 }
-
-export default LoginPage;

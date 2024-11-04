@@ -1,3 +1,3 @@
-export * from "./login-request";
+export * from "./login";
 export * from "./login-response";
 export * from "./create-user";

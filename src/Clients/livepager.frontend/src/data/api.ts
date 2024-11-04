@@ -1,4 +1,4 @@
-import axiosInstance from "./axios";
+import getAxiousInstance from "./axios";
 import {
   CreateUserRequest,
   CreateUserResponse,
@@ -8,11 +8,11 @@ import {
 import {
   FindMissionResponse,
   CreateMissionRequest,
-  FindMissionRequest,
   GetMissionsResponse,
 } from "./models/mission";
 
 async function login(request: LoginRequest): Promise<LoginResponse> {
+  const axiosInstance = getAxiousInstance();
   const response = await axiosInstance.post<LoginResponse>(
     "/api/authentication/login",
     request
@@ -24,6 +24,7 @@ async function login(request: LoginRequest): Promise<LoginResponse> {
 async function createUser(
   request: CreateUserRequest
 ): Promise<CreateUserResponse> {
+  const axiosInstance = getAxiousInstance();
   const response = await axiosInstance.post<CreateUserResponse>(
     "/api/authentication/create-user",
     request
@@ -33,10 +34,12 @@ async function createUser(
 }
 
 async function createMission(request: CreateMissionRequest): Promise<void> {
+  const axiosInstance = getAxiousInstance();
   await axiosInstance.post("/api/mission", request);
 }
 
 async function findMission(missionId: string): Promise<FindMissionResponse> {
+  const axiosInstance = getAxiousInstance();
   const response = await axiosInstance.get<FindMissionResponse>(
     `/api/mission/${missionId}`
   );
@@ -45,6 +48,7 @@ async function findMission(missionId: string): Promise<FindMissionResponse> {
 }
 
 export async function getMissions(): Promise<GetMissionsResponse> {
+  const axiosInstance = getAxiousInstance();
   const response = await axiosInstance.get<GetMissionsResponse>("/api/mission");
 
   return response.data as GetMissionsResponse;
