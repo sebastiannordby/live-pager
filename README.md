@@ -12,6 +12,8 @@ Search Coordination: Collaborate with others by visually seeing areas that have 
 Mission Overview: A centralized view of the mission's progress, showing all active participants, search areas, and coverage.
 LivePager is ideal for use in search-and-rescue operations, organized search missions for missing persons, pets, or other situations that require team-based location tracking.
 
+<img src="/docs/images/login-screen.jpeg" height="400"/>
+
 ## How do i run this project?
 
 ### Azurite
