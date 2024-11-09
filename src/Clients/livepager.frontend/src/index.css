@@ -77,3 +77,8 @@ button:focus-visible {
   background: url("/images/rescue-background.jpg");
   background-size: contain;
 }
+
+.rescue-background {
+  background: url("/images/rescue-background.jpg");
+  background-size: cover;
+}

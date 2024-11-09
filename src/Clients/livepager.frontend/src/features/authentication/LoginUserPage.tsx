@@ -32,7 +32,7 @@ export default function LoginUserPage() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h2 className="text-xl text-black font-bold mb-4">Login</h2>
+      <h2 className="text-lg mb-1">Login</h2>
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleLogin} className="flex flex-col space-y-4">
         <TextField

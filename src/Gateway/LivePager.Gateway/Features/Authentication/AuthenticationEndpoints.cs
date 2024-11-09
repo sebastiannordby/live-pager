@@ -1,5 +1,4 @@
-﻿
-using LivePager.Gateway.Features.Authentication.Contracts.CreateUser;
+﻿using LivePager.Gateway.Features.Authentication.Contracts.CreateUser;
 using LivePager.Gateway.Features.Authentication.CreateUser;
 using LivePager.Gateway.Features.Authentication.Requests;
 using LivePager.Gateway.Features.Authentication.Responses;

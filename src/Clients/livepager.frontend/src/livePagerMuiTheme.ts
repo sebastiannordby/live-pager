@@ -3,40 +3,40 @@ import { createTheme } from "@mui/material/styles";
 const livePagerTheme = createTheme({
   palette: {
     primary: {
-      main: "#1e3a8a", // Deep blue for reliability and trust
-      light: "#3b82f6", // Lighter blue for accents
-      dark: "#1e40af", // Dark blue for contrast
-      contrastText: "#ffffff", // White text for readability
+      main: "#484a22", // Deep green for primary actions
+      light: "#99b091", // Soft green for accents
+      dark: "#2c4c3f", // Darker green for contrast
+      contrastText: "#ffffff", // White for readability on green backgrounds
     },
     secondary: {
-      main: "#ef4444", // Red for urgency and action (used sparingly)
-      light: "#f87171", // Lighter red for accents
-      dark: "#b91c1c", // Dark red for strong emphasis
-      contrastText: "#ffffff", // White text for contrast
+      main: "#c3a97b", // Light brown for secondary actions
+      light: "#e8e0c7", // Beige for lighter accents
+      dark: "#bda478", // Darker brown for strong emphasis
+      contrastText: "#111827", // Dark gray text for legibility
     },
     background: {
-      default: "#f3f4f6", // Soft, neutral gray for a modern feel
-      paper: "#ffffff", // White background for paper elements
+      default: "#e8e0c7", // Beige as the background for a warm feel
+      paper: "#ffffff", // White background for cards and dialogs
     },
     text: {
-      primary: "#111827", // Dark gray for primary text for better readability
-      secondary: "#6b7280", // Medium gray for secondary text
+      primary: "#2c4c3f", // Dark green for primary text
+      secondary: "#5d7f66", // Softer green for secondary text
     },
     error: {
-      main: "#dc2626", // Strong red for error states
+      main: "#dc2626", // Strong red for error messages
     },
     warning: {
-      main: "#f59e0b", // Orange for warnings
+      main: "#f59e0b", // Bright orange for warnings
     },
     info: {
-      main: "#3b82f6", // Blue for informational messages
+      main: "#99b091", // Soft green for informational messages
     },
     success: {
-      main: "#10b981", // Green for success messages
+      main: "#5d7f66", // Calming green for success messages
     },
   },
   typography: {
-    fontFamily: "'Roboto', sans-serif", // Clean and modern font
+    fontFamily: "Inter, Arial, sans-serif", // Fall back to Arial/sans-serif
     h1: {
       fontSize: "2.25rem",
       fontWeight: 700,
@@ -57,40 +57,12 @@ const livePagerTheme = createTheme({
     },
   },
   components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: "8px", // Rounded corners for buttons
-          textTransform: "none", // No uppercase text
-          fontWeight: 600,
-        },
-        containedPrimary: {
-          backgroundColor: "#1e3a8a",
-          "&:hover": {
-            backgroundColor: "#1e40af", // Darker on hover
+    MuiTextField: {
+      defaultProps: {
+        slotProps: {
+          inputLabel: {
+            shrink: true,
           },
-        },
-        containedSecondary: {
-          backgroundColor: "#ef4444",
-          "&:hover": {
-            backgroundColor: "#b91c1c", // Darker on hover
-          },
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: "10px", // Slightly rounded corners for paper elements
-          padding: "16px", // Default padding
-        },
-      },
-    },
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "#1e3a8a", // Primary color for app bar
-          color: "#ffffff", // White text for the app bar
         },
       },
     },
