@@ -5,6 +5,7 @@ using LivePager.Gateway.Infrastructure;
 using LivePager.Grains.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -84,6 +85,15 @@ builder.Services.AddOrleansClient(clientBuilder =>
 });
 
 var app = builder.Build();
+
+{
+    using var scope = app.Services.CreateScope();
+
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<LiverPagerDbContext>();
+
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

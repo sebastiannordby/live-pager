@@ -21,7 +21,7 @@ export default function LoginUserPage() {
 
       if (response.jwtToken) {
         localStorage.setItem("token", response.jwtToken);
-        navigate("/tracking");
+        navigate("/");
       } else {
         setError("Invalid username or password");
       }
@@ -69,7 +69,7 @@ export default function LoginUserPage() {
           color="secondary"
           fullWidth
           href="/authentication/register"
-          sx={{ mt: 0 }}
+          sx={{ mt: "6px !important" }}
         >
           Dont have a user? Register here
         </Button>

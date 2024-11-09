@@ -15,7 +15,7 @@ var siloHost = builder
 // Add the API Service project
 var gatewayService = builder.AddProject<Projects.LivePager_Gateway>("gateway-service")
     .WithReference(siloHost)
-    .WithEnvironment("Secrets:ConnectionString", "Server=localhost,1433;Database=liverpager_gateway;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultsets=True;")
+    //.WithEnvironment("Secrets:ConnectionString", "Server=localhost,1433;Database=liverpager_gateway;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultsets=True;")
     .WithEnvironment("Orleans:Storage:BlobConnectionString", azuriteConnection)
     .WithHttpsEndpoint(5170, name: "gateway-service-https"); // Ensure the API service can reference the silo host
 

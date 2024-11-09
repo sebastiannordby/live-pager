@@ -14,7 +14,7 @@ import {
 } from "./features/authentication";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline"; // To apply global styles
-import livePagerTheme from "./livePagerMuiTheme";
+import livePagerTheme from "./common/theme/livePagerMuiTheme";
 
 function App() {
   return (
@@ -33,9 +33,11 @@ function App() {
             path="/"
             element={
               <>
-                <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
+                <header className="flex justify-between items-center p-4 bg-beige text-white">
                   <div className="flex items-center">
-                    <h1 className="ml-4 text-2xl">Live Pager</h1>
+                    <h1 className="ml-4 text-2xl text-green-4 font-bold">
+                      Live Pager
+                    </h1>
                   </div>
                 </header>
                 <main className="flex flex-col h-full">

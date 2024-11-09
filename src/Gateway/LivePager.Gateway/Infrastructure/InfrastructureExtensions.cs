@@ -15,8 +15,10 @@ namespace LivePager.Gateway.Infrastructure
 
             services.AddDbContext<LiverPagerDbContext>(options =>
             {
+                var connectionString = configuration["Secrets:ConnectionString"];
+
                 options.UseSqlServer(
-                    configuration["Secrets:ConnectionString"]);
+                    connectionString);
             });
 
             return services

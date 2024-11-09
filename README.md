@@ -48,5 +48,5 @@ When opening the solution in Visual Studio:
 - Aspire Dashboard will show up with an overview of the resources/services/applications available
 
 ```
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=liverPagerPassword" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Str0ngP@ssw0rd!" -p 1433:1433 --name liverpager_gateway_db -d mcr.microsoft.com/mssql/server:2022-latest
 ```
