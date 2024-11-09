@@ -27,70 +27,74 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen pt-2 bg-white">
-      <div className="w-full h-full">
-        <div className="mt-4 flex flex-col items-center w-full">
-          <h3 className="text-2xl">Open Missions</h3>
-          <p className="text-lg font-thin mb-4 text-center">
-            Thanks for helping other people, you are a good person.
-          </p>
+    <div className="w-full h-full flex-1 max-w-[500px] mx-auto">
+      <div className="mt-4 flex flex-col items-center w-full overflow-hidden">
+        <h3 className="text-2xl">Open Missions</h3>
+        <p className="text-lg font-thin mb-4 text-center">
+          Thanks for helping other people, you are a good person.
+        </p>
 
-          {missions.length == 0 ? (
-            <p>No available missions</p>
-          ) : (
-            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-              {missions.map((mission) => (
-                <>
-                  <ListItem
-                    key={`${mission.name}_${mission.created}`}
-                    onClick={() => gotoMission(mission.id)}
-                    className="cursor-pointer hover:bg-gray-500 hover:text-white"
-                  >
-                    <ListItemText
-                      primary={
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <Typography variant="h6">{mission.name}</Typography>
-                            <Typography variant="subtitle1">
-                              {mission.organization}
+        {missions.length == 0 ? (
+          <p>No available missions</p>
+        ) : (
+          <List
+            sx={{
+              width: "100%",
+              bgcolor: "background.paper",
+              overflowY: "auto",
+            }}
+          >
+            {missions.map((mission) => (
+              <>
+                <ListItem
+                  key={`${mission.name}_${mission.created}`}
+                  onClick={() => gotoMission(mission.id)}
+                  className="cursor-pointer hover:bg-gray-500 hover:text-white"
+                >
+                  <ListItemText
+                    primary={
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <Typography variant="h6">{mission.name}</Typography>
+                          <Typography variant="subtitle1">
+                            {mission.organization}
+                          </Typography>
+
+                          {!mission.updated ? (
+                            ""
+                          ) : (
+                            <Typography variant="body2">
+                              Updated:{" "}
+                              {new Date(mission.updated).toLocaleDateString()}{" "}
+                              {/* Format the date as needed */}
                             </Typography>
+                          )}
 
-                            {!mission.updated ? (
-                              ""
-                            ) : (
-                              <Typography variant="body2">
-                                Updated:{" "}
-                                {new Date(mission.updated).toLocaleDateString()}{" "}
-                                {/* Format the date as needed */}
-                              </Typography>
-                            )}
-
-                            {!mission.created ? (
-                              ""
-                            ) : (
-                              <Typography variant="body2">
-                                Created:{" "}
-                                {new Date(mission.created).toLocaleDateString()}{" "}
-                                {/* Format the date as needed */}
-                              </Typography>
-                            )}
-                          </div>
-                          <ArrowForwardIcon />
+                          {!mission.created ? (
+                            ""
+                          ) : (
+                            <Typography variant="body2">
+                              Created:{" "}
+                              {new Date(mission.created).toLocaleDateString()}{" "}
+                              {/* Format the date as needed */}
+                            </Typography>
+                          )}
                         </div>
-                      }
-                    />
-                  </ListItem>
-                  <Divider
-                    variant="inset"
-                    component="li"
-                    sx={{ marginLeft: "unset" }}
+                        <ArrowForwardIcon />
+                      </div>
+                    }
                   />
-                </>
-              ))}
-            </List>
-          )}
-        </div>
+                </ListItem>
+                <Divider
+                  variant="inset"
+                  component="li"
+                  sx={{ marginLeft: "unset" }}
+                />
+              </>
+            ))}
+          </List>
+        )}
       </div>
-    </main>
+    </div>
   );
 }

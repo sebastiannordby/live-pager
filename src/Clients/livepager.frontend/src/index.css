@@ -17,6 +17,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  background-color: #fff;
+}
+
 #root > main {
   flex: 1;
   overflow-y: auto;

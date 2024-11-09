@@ -8,7 +8,7 @@ export default function Footer() {
   const navigate = useNavigate();
 
   return (
-    <footer>
+    <footer className="border-t border-gray-300 p-2">
       <BottomNavigation showLabels>
         <BottomNavigationAction
           label="Go home"

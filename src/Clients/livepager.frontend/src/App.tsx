@@ -35,7 +35,8 @@ function App() {
               <>
                 <header className="flex justify-between items-center p-4 bg-beige text-white">
                   <div className="flex items-center">
-                    <h1 className="ml-4 text-2xl text-green-4 font-bold">
+                    <img src="/images/compass.png" className="h-12" />
+                    <h1 className="ml-1 text-2xl text-green-4 font-bold">
                       Live Pager
                     </h1>
                   </div>
