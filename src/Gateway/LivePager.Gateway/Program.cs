@@ -79,7 +79,7 @@ builder.Services.AddOrleansClient(clientBuilder =>
 
     clientBuilder.UseAzureStorageClustering(options =>
     {
-        options.TableName = GrainStorageConstants.LiverPagerClusterTable;
+        options.TableName = LivePagerOrleansConstants.LiverPagerClusterTable;
         options.TableServiceClient = new(blobStorageConnectionString);
     });
 });

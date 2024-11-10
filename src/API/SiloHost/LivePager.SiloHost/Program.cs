@@ -17,7 +17,7 @@ builder.UseOrleans(siloBuilder =>
 {
     siloBuilder.UseAzureStorageClustering(opt =>
     {
-        opt.TableName = GrainStorageConstants.LiverPagerClusterTable;
+        opt.TableName = LivePagerOrleansConstants.LiverPagerClusterTable;
         opt.TableServiceClient = new(blobStorageConnectionString);
     });
 
@@ -30,26 +30,26 @@ builder.UseOrleans(siloBuilder =>
                 opt.BlobServiceClient = new BlobServiceClient(blobStorageConnectionString);
             });
         })
-        .AddAzureBlobGrainStorage(GrainStorageConstants.LocationStore, options =>
+        .AddAzureBlobGrainStorage(LivePagerOrleansConstants.LocationStore, options =>
         {
             options.ContainerName = orleansSettings["Storage:LocationStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
         })
-        .AddAzureBlobGrainStorage(GrainStorageConstants.MissionStore, options =>
+        .AddAzureBlobGrainStorage(LivePagerOrleansConstants.MissionStore, options =>
         {
             options.ContainerName = orleansSettings["Storage:MissionStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
         })
-        .AddAzureBlobGrainStorage(GrainStorageConstants.MissionCollectionStore, options =>
+        .AddAzureBlobGrainStorage(LivePagerOrleansConstants.MissionCollectionStore, options =>
         {
             options.ContainerName = orleansSettings["Storage:MissionCollectionStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
         })
-        .AddAzureBlobGrainStorage(GrainStorageConstants.PubSubStore, options =>
+        .AddAzureBlobGrainStorage(LivePagerOrleansConstants.PubSubStore, options =>
         {
             options.ContainerName = orleansSettings["Storage:PubSubStore:ContainerName"];
             options.BlobServiceClient = new(blobStorageConnectionString);
-        }).AddAzureQueueStreams(GrainStorageConstants.DefaultStreamProvider, configurator =>
+        }).AddAzureQueueStreams(LivePagerOrleansConstants.DefaultStreamProvider, configurator =>
         {
             configurator.ConfigureAzureQueue(
                 ob => ob.Configure(options =>

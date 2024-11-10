@@ -74,7 +74,7 @@ namespace LiverPager.SiloHost.Tests.Integration
                        })
                        .UseAzureStorageClustering(options =>
                         {
-                            options.TableName = GrainStorageConstants.LiverPagerClusterTable;
+                            options.TableName = LivePagerOrleansConstants.LiverPagerClusterTable;
                             options.TableServiceClient = new Azure.Data.Tables.TableServiceClient(blobStorageConnectionString);
                         });
                })

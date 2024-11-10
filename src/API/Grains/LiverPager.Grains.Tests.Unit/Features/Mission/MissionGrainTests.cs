@@ -25,7 +25,7 @@ namespace LiverPager.Grains.Tests.Unit.Features.Mission
                 .GetGrain<IMissionGrain>(grainId);
             var missionCollectionGrain = _fixture.Cluster.GrainFactory
                 .GetGrain<IMissionCollectionGrain>(
-                    GrainStorageConstants.GlobalMissionCollection);
+                    LivePagerOrleansConstants.GlobalMissionCollection);
 
             // Define test data
             var name = "Test Mission";

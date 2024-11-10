@@ -5,16 +5,17 @@ using Orleans.Streams;
 namespace LivePager.Grains.Features.Participant
 {
     [StorageProvider(ProviderName = "LocationStore")]
-    public class ParticipantGrain : Grain<LocationState>, IParticipantGrain
+    public class ParticipantGrain : Grain<ParticipantState>, IParticipantGrain
     {
         private IAsyncStream<LocationDataPoint> _locationStream = null!;
 
         public override async Task OnActivateAsync(
             CancellationToken cancellationToken)
         {
-            var streamProvider = this.GetStreamProvider("Default");
-            _locationStream = streamProvider
-                .GetStream<LocationDataPoint>(this.GetPrimaryKey());
+            //var streamProvider = this.GetStreamProvider(
+            //    LivePagerOrleansConstants.DefaultStreamProvider);
+            //_locationStream = streamProvider
+            //    .GetStream<LocationDataPoint>(State.MissionId);
         }
 
         public async Task AddLocationAsync(

@@ -38,11 +38,11 @@ namespace LiverPager.Grains.Tests.Unit
                 ISiloBuilder siloBuilder)
             {
                 siloBuilder
-                    .AddMemoryGrainStorage(GrainStorageConstants.LocationStore)
-                    .AddMemoryGrainStorage(GrainStorageConstants.MissionStore)
-                    .AddMemoryGrainStorage(GrainStorageConstants.PubSubStore)
-                    .AddMemoryGrainStorage(GrainStorageConstants.MissionCollectionStore)
-                    .AddMemoryStreams(GrainStorageConstants.DefaultStreamProvider)
+                    .AddMemoryGrainStorage(LivePagerOrleansConstants.LocationStore)
+                    .AddMemoryGrainStorage(LivePagerOrleansConstants.MissionStore)
+                    .AddMemoryGrainStorage(LivePagerOrleansConstants.PubSubStore)
+                    .AddMemoryGrainStorage(LivePagerOrleansConstants.MissionCollectionStore)
+                    .AddMemoryStreams(LivePagerOrleansConstants.DefaultStreamProvider)
                     .ConfigureServices(services =>
                     {
                         services.AddSingleton(LocationRepositoryMock);
@@ -57,7 +57,8 @@ namespace LiverPager.Grains.Tests.Unit
                 IConfiguration configuration,
                 IClientBuilder clientBuilder)
             {
-                clientBuilder.AddMemoryStreams("DefaultStreamProvider"); // Add stream provider to client
+                clientBuilder.AddMemoryStreams(
+                    LivePagerOrleansConstants.DefaultStreamProvider); // Add stream provider to client
             }
         }
     }

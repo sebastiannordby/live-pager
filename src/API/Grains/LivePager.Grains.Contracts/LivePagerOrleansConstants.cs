@@ -1,6 +1,6 @@
 ﻿namespace LivePager.Grains.Contracts
 {
-    public static class GrainStorageConstants
+    public static class LivePagerOrleansConstants
     {
         public const string GlobalMissionCollection = "GlobalMissionCollection";
 
