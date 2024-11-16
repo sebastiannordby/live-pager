@@ -1,5 +1,5 @@
 ﻿using LivePager.Grains.Contracts.Mission;
-using LivePager.Grains.Contracts.Participant;
+using LivePager.Grains.Contracts.MissionParticipant;
 using Orleans.Providers;
 using Orleans.Streams;
 

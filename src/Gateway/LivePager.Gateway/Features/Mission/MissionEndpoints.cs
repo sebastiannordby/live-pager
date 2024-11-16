@@ -75,7 +75,7 @@ namespace LivePager.Gateway.Features.Mission
                 .GetGrain<IMissionCollectionGrain>("GlobalMissionCollection");
 
             var missionNames = await missionCollectionGrain
-                .GetMissions();
+                .GetMissionsAsync();
 
             var missions = missionNames.Select(mission =>
                 new GetMissionsResponseMissionDto()

@@ -1,5 +1,5 @@
 ﻿
-namespace LivePager.Grains.Contracts.Participant
+namespace LivePager.Grains.Contracts.MissionParticipant
 {
     [Serializable]
     public class ParticipantState

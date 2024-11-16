@@ -5,12 +5,13 @@ import { API } from "../../data/api";
 import { Button, CircularProgress } from "@mui/material";
 import { Circle, MapContainer, Marker, TileLayer } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
-import { setActiveMission } from "./mission-store";
+import { useActiveMission } from "../../common/ActiveMissionProvider";
 
 export default function EnterMissionPage() {
   const { id } = useParams();
   const [mission, setMission] = useState<FindMissionResponse>();
   const navigate = useNavigate();
+  const activeMission = useActiveMission();
 
   useEffect(() => {
     if (!id) {
@@ -27,8 +28,9 @@ export default function EnterMissionPage() {
     return <CircularProgress />;
   }
 
-  const enterMission = () => {
-    setActiveMission(mission);
+  const joinMission = async () => {
+    activeMission.setMission(mission);
+    await activeMission.connection!.send("JoinMissionGroup", mission.id);
     navigate("/mission/active");
   };
 
@@ -40,7 +42,7 @@ export default function EnterMissionPage() {
 
   return (
     <div className="flex flex-col h-full text-center">
-      <h1 className="text-xl my-4">Enter Mission - {mission?.name}</h1>
+      <h1 className="text-xl my-4">Join Mission - {mission?.name}</h1>
 
       <MapContainer
         center={missionCenter as LatLngExpression}
@@ -65,9 +67,9 @@ export default function EnterMissionPage() {
         variant="contained"
         className="mt-2"
         color={"primary"}
-        onClick={enterMission}
+        onClick={async () => await joinMission()}
       >
-        Enter mission
+        Join mission
       </Button>
     </div>
   );

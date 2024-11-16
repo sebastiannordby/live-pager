@@ -23,6 +23,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.AddMissionFeature();
 builder.Services.AddAuthenticationFeature();
 
 builder.Services.AddAuthentication(options =>
@@ -64,6 +66,7 @@ builder.Services.AddCors(x =>
         configurePolicy
             .WithOrigins(clients)
             .AllowAnyHeader()
+            .AllowCredentials()
             .AllowAnyMethod();
     });
 });
@@ -71,17 +74,25 @@ builder.Services.AddCors(x =>
 builder.Services.AddOrleansClient(clientBuilder =>
 {
     var blobStorageConnectionString = builder.Configuration["Orleans:Storage:BlobConnectionString"];
+    var queueConnectionString = builder.Configuration["Orleans:Storage:QueueConnectionString"];
 
     clientBuilder.ConfigureServices(services =>
     {
         services.AddSingleton(new BlobServiceClient(blobStorageConnectionString));
+        services.AddHostedService<MissionStreamHostedService>();
     });
+
+
+    clientBuilder.AddAzureQueueStreams(LivePagerOrleansConstants.DefaultStreamProvider,
+        optionsBuilder => optionsBuilder.Configure(
+            options => options.QueueServiceClient = new(queueConnectionString)));
 
     clientBuilder.UseAzureStorageClustering(options =>
     {
         options.TableName = LivePagerOrleansConstants.LiverPagerClusterTable;
         options.TableServiceClient = new(blobStorageConnectionString);
     });
+
 });
 
 var app = builder.Build();

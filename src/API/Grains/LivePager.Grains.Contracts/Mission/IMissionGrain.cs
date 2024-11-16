@@ -1,4 +1,4 @@
-﻿using LivePager.Grains.Contracts.Participant;
+﻿using LivePager.Grains.Contracts.MissionParticipant;
 
 namespace LivePager.Grains.Contracts.Mission
 {

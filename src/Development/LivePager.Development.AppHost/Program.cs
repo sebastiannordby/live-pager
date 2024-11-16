@@ -15,9 +15,10 @@ var siloHost = builder
 // Add the API Service project
 var gatewayService = builder.AddProject<Projects.LivePager_Gateway>("gateway-service")
     .WithReference(siloHost)
-    //.WithEnvironment("Secrets:ConnectionString", "Server=localhost,1433;Database=liverpager_gateway;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultsets=True;")
     .WithEnvironment("Orleans:Storage:BlobConnectionString", azuriteConnection)
-    .WithHttpsEndpoint(5170, name: "gateway-service-https"); // Ensure the API service can reference the silo host
+    .WithEnvironment("Orleans:Storage:QueueConnectionString", azuriteConnection)
+    //.WithEnvironment("Secrets:ConnectionString", "Server=localhost,1433;Database=liverpager_gateway;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultsets=True;")
+    .WithHttpsEndpoint(5170, name: "gateway-service-https");
 
 // Add the Web Frontend project
 builder.AddNpmApp("frontend", "../../Clients/livepager.frontend", "dev")
@@ -37,3 +38,8 @@ builder.Build().Run();
 //var grainStorage = storage.AddBlobs("BlobConnection");
 //var cluster = storage.AddTables("LiverPagerClusterTable");
 //var queues = storage.AddQueues("QueueConnection");
+
+//var sqlServer = builder
+//    .AddSqlServer("gatewaydbserver", port: 1433);
+//var sqlDatabase = sqlServer
+//    .AddDatabase("gatewaydb");

@@ -5,17 +5,9 @@ import {
   Marker,
   Circle,
   useMapEvents,
-  // useMap,
 } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
-import {
-  Button,
-  Input,
-  MobileStepper,
-  Slider,
-  Step,
-  TextField,
-} from "@mui/material";
+import { Button, Slider, TextField } from "@mui/material";
 import "leaflet/dist/leaflet.css";
 import { API } from "../../data/api";
 import { CreateMissionRequest } from "../../data/models/mission/create-mission-request";

@@ -2,9 +2,21 @@
 {
     internal static class MissionExtensions
     {
+        internal static WebApplicationBuilder AddMissionFeature(
+            this WebApplicationBuilder webAppBuilder)
+        {
+            //webAppBuilder.Services
+            //    .AddHostedService<MissionStreamHostedService>();
+
+            return webAppBuilder;
+        }
+
         internal static WebApplication UseMissionEndpoints(this WebApplication webApp)
         {
-            webApp.MapHub<ParticipantHub>("/mission-hub");
+            webApp
+                .MapHub<MissionSignalRHub>("/mission-hub")
+                .RequireCors("frontend")
+                .AllowAnonymous();
 
             var group = webApp
                 .MapGroup("/api/mission")

@@ -1,6 +1,6 @@
 ﻿using LivePager.Grains.Contracts;
 using LivePager.Grains.Contracts.Mission;
-using LivePager.Grains.Contracts.Participant;
+using LivePager.Grains.Contracts.MissionParticipant;
 using Orleans.Streams;
 
 namespace LiverPager.Grains.Tests.Unit.Features.Mission
@@ -43,7 +43,7 @@ namespace LiverPager.Grains.Tests.Unit.Features.Mission
                 searchRadius);
 
             // Assert
-            var missions = await missionCollectionGrain.GetMissions();
+            var missions = await missionCollectionGrain.GetMissionsAsync();
 
             Assert.Contains(missions, x => x.Name == name);
         }

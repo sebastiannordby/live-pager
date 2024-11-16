@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using LivePager.Grains.Contracts.Participant;
+using LivePager.Grains.Contracts.MissionParticipant;
 using NSubstitute;
 
 namespace LiverPager.Grains.Tests.Unit.Features.Location
@@ -20,7 +20,7 @@ namespace LiverPager.Grains.Tests.Unit.Features.Location
         public async Task ShouldNotPersistLocationWhenAddingLocation()
         {
             var sut = _fixture.Cluster.GrainFactory
-                .GetGrain<IParticipantGrain>(Guid.NewGuid().ToString());
+                .GetGrain<IMissionParticipantGrain>(Guid.NewGuid().ToString());
 
             await sut.AddLocationAsync(new()
             {

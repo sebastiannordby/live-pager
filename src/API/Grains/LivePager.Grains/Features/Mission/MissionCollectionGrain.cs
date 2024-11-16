@@ -18,7 +18,7 @@ namespace LivePager.Grains.Features.Mission
             await WriteStateAsync();
         }
 
-        public async Task<MissionDto[]> GetMissions()
+        public async Task<MissionDto[]> GetMissionsAsync()
         {
             var missions = new MissionDto[State.Missions.Count];
 
