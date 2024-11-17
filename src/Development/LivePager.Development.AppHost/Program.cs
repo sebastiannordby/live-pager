@@ -2,7 +2,11 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 const string azuriteConnection = "UseDevelopmentStorage=true";
 
-// Add the Silo Host project
+// Orleans needs:
+// - Blob Storage
+// - Queues
+
+// ASP.Core: Add the Silo Host project
 var siloHost = builder
     .AddProject<Projects.LivePager_SiloHost>("siloHost")
     .WithEnvironment("Orleans:Storage:LocationStore:ContainerName", "location-store")
@@ -12,7 +16,8 @@ var siloHost = builder
     .WithEnvironment("Orleans:Storage:BlobConnectionString", azuriteConnection)
     .WithEnvironment("Orleans:Storage:QueueConnectionString", azuriteConnection);
 
-// Add the API Service project
+// ASP.Core: Add the API Service project
+// Needs a MSSQL Database
 var gatewayService = builder.AddProject<Projects.LivePager_Gateway>("gateway-service")
     .WithReference(siloHost)
     .WithEnvironment("Orleans:Storage:BlobConnectionString", azuriteConnection)
@@ -20,7 +25,7 @@ var gatewayService = builder.AddProject<Projects.LivePager_Gateway>("gateway-ser
     //.WithEnvironment("Secrets:ConnectionString", "Server=localhost,1433;Database=liverpager_gateway;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultsets=True;")
     .WithHttpsEndpoint(5170, name: "gateway-service-https");
 
-// Add the Web Frontend project
+// React /w Vite: Add the Web Frontend project
 builder.AddNpmApp("frontend", "../../Clients/livepager.frontend", "dev")
     .WithReference(gatewayService)
     .WithEnvironment("BROWSER", "none")

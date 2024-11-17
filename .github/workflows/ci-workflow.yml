@@ -2,7 +2,7 @@ name: Build & Test .NET Project
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -13,32 +13,32 @@ jobs:
         working-directory: src
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4.1.0
-      with:
-        node-version: '22.x'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: "22.x"
 
-    - name: Build Frontend
-      run: |
-        cd Clients/livepager.frontend
-        npm install
-        npm run build
+      - name: Build Frontend
+        run: |
+          cd Clients/livepager.frontend
+          npm install
+          npm run build
 
-    - name: Install Required Dotnet Workloads
-      run: |
-       dotnet workload install aspire
-        
-    - name: Restore Dotnet Dependencies
-      run: dotnet restore LivePager.sln
-    
-    - name: Build Dotnet Projects
-      run: dotnet build LivePager.sln --no-restore --configuration Release
-    
-    - name: Test Dotnet Projects
-      run: dotnet test LivePager.sln --no-build --verbosity normal --configuration Release
+      - name: Install Required Dotnet Workloads
+        run: |
+          dotnet workload install aspire
+
+      - name: Restore Dotnet Dependencies
+        run: dotnet restore LivePager.sln
+
+      - name: Build Dotnet Projects
+        run: dotnet build LivePager.sln --no-restore --configuration Release
+
+      - name: Test Dotnet Projects
+        run: dotnet test LivePager.sln --no-build --verbosity normal --configuration Release
