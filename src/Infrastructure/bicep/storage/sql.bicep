@@ -1,5 +1,7 @@
 @description('Deploys an Azure SQL Database for Gateway Service.')
 param adminUsername string
+@description('The administrator password for the SQL server.')
+@secure()
 param adminPassword string
 param databaseName string
 param location string
@@ -22,4 +24,4 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2024-05-01-preview' = {
   }
 }
 
-output connectionString string = 'Server=tcp:${sqlServer.name}.database.windows.net,1433;Database=${databaseName};User ID=${adminUsername};Password=${adminPassword};Encrypt=true;Connection Timeout=30;'
+output connectionString string = 'Server=tcp:${sqlServer.name}.${environment().suffixes.sqlServerHostname},1433;Database=${databaseName};User ID=${adminUsername};Encrypt=true;Connection Timeout=30;'
