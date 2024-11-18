@@ -2,8 +2,9 @@
 param adminUsername string
 param adminPassword string
 param databaseName string
+param location string
 
-resource sqlServer 'Microsoft.Sql/servers@2022-11-01-preview' = {
+resource sqlServer 'Microsoft.Sql/servers@2024-05-01-preview' = {
   name: '${databaseName}-server'
   location: resourceGroup().location
   properties: {
@@ -12,8 +13,9 @@ resource sqlServer 'Microsoft.Sql/servers@2022-11-01-preview' = {
   }
 }
 
-resource sqlDatabase 'Microsoft.Sql/servers/databases@2022-11-01-preview' = {
+resource sqlDatabase 'Microsoft.Sql/servers/databases@2024-05-01-preview' = {
   name: databaseName
+  location: location
   parent: sqlServer
   properties: {
     collation: 'SQL_Latin1_General_CP1_CI_AS'

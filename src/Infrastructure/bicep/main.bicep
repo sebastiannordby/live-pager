@@ -3,24 +3,22 @@
 //     name: '<acr-name>'
 // }
 
-var location = resourceGroup().location
+var resourceLocation = resourceGroup().location
 var acrName = 'livepager.azurecr.io'
 var locationStoreName = 'location-storage'
 var missionStoreName = 'mission-store'
 var missionCollectionStoreName = 'mission-collection-store'
 var pubSubStoreName = 'pub-sub'
 
-
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
     name: 'livepager-env'
-    location: location
+    location: resourceLocation
     properties: {
-      appLogsConfiguration: {
+        appLogsConfiguration: {
         destination: 'log-analytics'
-      }
+        }
     }
-  }
-  
+}
 
 module storage './storage/storage.bicep' = {
   name: 'storageDeployment'
@@ -39,7 +37,7 @@ module siloHost './applications/siloHost.bicep' = {
     storageAccountConnectionString: storage.outputs.connectionString
     acrServer: acrName
     managedEnvironmentId: containerAppEnv.id
-    resourceGroupLocation: location
+    resourceGroupLocation: resourceLocation
     siloHostImage: '${acrName}/silohost-service:latest'
     locationStoreName: locationStoreName
     missionStoreName: missionStoreName
@@ -54,6 +52,7 @@ module sql './storage/sql.bicep' = {
     adminUsername: 'sqladmin'
     adminPassword: 'SecureP@ssw0rd!'
     databaseName: 'LivePagerGatewayDb'
+    location: resourceLocation
   }
 }
 
