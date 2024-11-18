@@ -38,4 +38,8 @@
     <ProjectReference Include="..\LivePager.Grains.Contracts\LivePager.Grains.Contracts.csproj" />
     <ProjectReference Include="..\LivePager.Grains\LivePager.Grains.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Location\" />
+  </ItemGroup>
 </Project>
