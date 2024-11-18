@@ -4,11 +4,11 @@ import L, { LatLngExpression } from "leaflet";
 import { useActiveMission } from "../../common/ActiveMissionProvider";
 import getAxiousInstance from "../../data/axios";
 
-type ParticipantCurrentLocation = {
-  displayName: string;
-  longitude: number;
-  latitude: number;
-};
+// type ParticipantCurrentLocation = {
+//   displayName: string;
+//   longitude: number;
+//   latitude: number;
+// };
 
 type MissionLocationDataPoint = {
   missionId: string; // Guid represented as a string
