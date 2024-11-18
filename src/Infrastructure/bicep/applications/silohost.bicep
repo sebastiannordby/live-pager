@@ -30,6 +30,26 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'BlobConnectionString'
           value: storageAccountConnectionString
         }
+        {
+          name: 'BlobConnectionString'
+          value: storageAccountConnectionString
+        }
+        {
+          name: 'Orleans:Storage:LocationStore:ContainerName'
+          value: locationStoreName
+        }
+        {
+          name: 'Orleans:Storage:MissionStore:ContainerName'
+          value: missionStoreName
+        }
+        {
+          name: 'Orleans:Storage:MissionCollectionStore:ContainerName'
+          value: missionCollectionStoreName
+        }
+        {
+          name: 'Orleans:Storage:PubSubStore:ContainerName'
+          value: pubSubStoreName
+        }
       ]
     }
     template: {
