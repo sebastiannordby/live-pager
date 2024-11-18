@@ -3,13 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GetMissionsResponseMissionDto } from "./data/models/mission/get-missions-response";
 import { API } from "./data/api";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  Divider,
-} from "@mui/material";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function Home() {

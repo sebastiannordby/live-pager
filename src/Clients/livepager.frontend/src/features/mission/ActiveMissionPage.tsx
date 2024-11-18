@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { HubConnectionBuilder } from "@microsoft/signalr";
 import { Circle, MapContainer, Marker, TileLayer } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
 import { useActiveMission } from "../../common/ActiveMissionProvider";
@@ -35,8 +34,8 @@ const sendLocationData = async (data: {
 };
 
 export function ActiveMissionPage() {
-  const [participantLocations, setParticipantLocations] =
-    useState<ParticipantCurrentLocation[]>();
+  // const [participantLocations, setParticipantLocations] =
+  //   useState<ParticipantCurrentLocation[]>();
   const [isTracking, setIsTracking] = useState<boolean>(false);
   const [gpsWatchId, setGpsWatchId] = useState<number | null>(null); // Move watchId to state
   const activeMission = useActiveMission();
@@ -49,7 +48,7 @@ export function ActiveMissionPage() {
   };
 
   const handleError = (error: GeolocationPositionError) => {
-    console.error("Error getting location:", error);
+    console.error("Error getting location:", error, gpsWatchId, isTracking);
   };
 
   const startTracking = () => {
