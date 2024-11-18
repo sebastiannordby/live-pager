@@ -17,6 +17,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  background-color: #fff;
+}
+
+#root > main {
+  flex: 1;
+  overflow-y: auto;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -66,4 +75,14 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.home-bg {
+  background: url("/images/rescue-background.jpg");
+  background-size: contain;
+}
+
+.rescue-background {
+  background: url("/images/rescue-background.jpg");
+  background-size: cover;
 }

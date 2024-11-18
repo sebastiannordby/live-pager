@@ -1,4 +1,4 @@
-﻿using LivePager.Grains.Contracts.Location;
+﻿using LivePager.Grains.Contracts.MissionParticipant;
 
 namespace LivePager.Grains.Features.Participant.Repositories
 {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosInstance from "../../data/axios";
+import getAxiousInstance from "../../data/axios";
 
 export default function TrackingPage() {
   const [isTracking, setIsTracking] = useState(false);
@@ -24,7 +24,7 @@ export default function TrackingPage() {
     longitude: number;
   }) => {
     try {
-      await axiosInstance.post("/location", {
+      await getAxiousInstance().post("/location", {
         userIdentificator: "unique-user-id",
         latitude: data.latitude,
         longitude: data.longitude,

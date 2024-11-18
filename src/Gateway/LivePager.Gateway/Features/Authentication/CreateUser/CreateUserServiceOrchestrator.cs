@@ -1,18 +1,26 @@
-﻿using LivePager.Gateway.Features.Authentication.CreateUser.Logic;
+﻿using FluentValidation;
+using LivePager.Gateway.Features.Authentication.Contracts.CreateUser;
+using LivePager.Gateway.Features.Authentication.CreateUser.Logic;
+using LivePager.Gateway.Infrastructure;
+using LivePager.Gateway.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LivePager.Gateway.Features.Authentication.CreateUser
 {
     public class CreateUserServiceOrchestrator
     {
         private readonly CreateUserService _createUserService;
+        private readonly LiverPagerDbContext _dbContext;
 
         public CreateUserServiceOrchestrator(
-            CreateUserService createUserService)
+            CreateUserService createUserService,
+            LiverPagerDbContext dbContext)
         {
             _createUserService = createUserService;
+            _dbContext = dbContext;
         }
 
-        public async Task ExecuteAsync(
+        public async Task<CreateUserResponse> ExecuteAsync(
             CreateUserRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -23,16 +31,34 @@ namespace LivePager.Gateway.Features.Authentication.CreateUser
                 Password = request.Password
             };
 
-            // Call repository to validate username is unique
-            // Call repository to validate email is unique
+            var userExists = await _dbContext.Users
+                .AnyAsync(x => x.Username == request.Username, cancellationToken);
+            if (userExists)
+                throw new ValidationException("User already exists.");
 
-            var createUserResult = _createUserService
+            var createUserResult = await _createUserService
                 .ExecuteAsync(createUserCommand, cancellationToken);
+            if (!createUserResult.Success)
+                throw new ValidationException("Not valid user.");
 
-            // Use createUserResult.Username, createUserResult.HashedPassword, createUserResult.Email
-            // to persist a new user entity
+            var user = new User()
+            {
+                Username = createUserResult.User!.Username,
+                DisplayName = createUserResult.User!.DisplayName,
+                Email = createUserResult.User!.Email,
+                PasswordHash = createUserResult.User!.HashedPassword
+            };
 
-            // Return some other response actually intended for user.
+            await _dbContext.Users.AddAsync(user, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            var response = new CreateUserResponse()
+            {
+                Id = user.Id,
+                Username = user.Username!
+            };
+
+            return response;
         }
     }
 }

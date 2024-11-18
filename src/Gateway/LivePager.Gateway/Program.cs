@@ -1,8 +1,11 @@
+using Azure.Storage.Blobs;
 using LivePager.Gateway.Features.Authentication;
-using LivePager.Gateway.Features.Location;
+using LivePager.Gateway.Features.Mission;
 using LivePager.Gateway.Infrastructure;
+using LivePager.Grains.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -14,10 +17,14 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
+builder.AddLiverPagerServiceDefaults();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.AddMissionFeature();
 builder.Services.AddAuthenticationFeature();
 
 builder.Services.AddAuthentication(options =>
@@ -33,8 +40,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "live-pager.com",
-        ValidAudience = "live-pager.com",
+        ValidIssuer = "livepager.no",
+        ValidAudience = "livepager.no",
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["Keys:Authentication:Secret"]!))
     };
@@ -59,19 +66,45 @@ builder.Services.AddCors(x =>
         configurePolicy
             .WithOrigins(clients)
             .AllowAnyHeader()
+            .AllowCredentials()
             .AllowAnyMethod();
     });
 });
 
-if (builder.Environment.IsDevelopment())
+builder.Services.AddOrleansClient(clientBuilder =>
 {
-    builder.Services.AddOrleansClient(clientBuilder =>
+    var blobStorageConnectionString = builder.Configuration["Orleans:Storage:BlobConnectionString"];
+    var queueConnectionString = builder.Configuration["Orleans:Storage:QueueConnectionString"];
+
+    clientBuilder.ConfigureServices(services =>
     {
-        clientBuilder.UseLocalhostClustering();
+        services.AddSingleton(new BlobServiceClient(blobStorageConnectionString));
+        services.AddHostedService<MissionStreamHostedService>();
     });
-}
+
+
+    clientBuilder.AddAzureQueueStreams(LivePagerOrleansConstants.DefaultStreamProvider,
+        optionsBuilder => optionsBuilder.Configure(
+            options => options.QueueServiceClient = new(queueConnectionString)));
+
+    clientBuilder.UseAzureStorageClustering(options =>
+    {
+        options.TableName = LivePagerOrleansConstants.LiverPagerClusterTable;
+        options.TableServiceClient = new(blobStorageConnectionString);
+    });
+
+});
 
 var app = builder.Build();
+
+{
+    using var scope = app.Services.CreateScope();
+
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<LiverPagerDbContext>();
+
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -84,6 +117,6 @@ app.UseCors("frontend");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseLocationFeature();
+app.UseMissionEndpoints();
 app.UseAuthenticationFeature();
 app.Run();

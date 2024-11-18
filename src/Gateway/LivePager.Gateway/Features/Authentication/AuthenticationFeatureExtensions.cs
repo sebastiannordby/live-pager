@@ -1,4 +1,5 @@
-﻿using LivePager.Gateway.Features.Authentication.CreateUser.Logic;
+﻿using LivePager.Gateway.Features.Authentication.CreateUser;
+using LivePager.Gateway.Features.Authentication.CreateUser.Logic;
 using LivePager.Gateway.Features.Users;
 
 namespace LivePager.Gateway.Features.Authentication
@@ -10,6 +11,8 @@ namespace LivePager.Gateway.Features.Authentication
         {
             return services
                 .AddTransient<CreateUserService>()
+                .AddSingleton<PasswordHasher>()
+                .AddTransient<CreateUserServiceOrchestrator>()
                 .AddTransient<AuthenticationService>();
         }
 
@@ -22,6 +25,10 @@ namespace LivePager.Gateway.Features.Authentication
 
             authenticationGroup
                 .MapPost("/login", AuthenticationEndpoints.Login)
+                .AllowAnonymous();
+
+            authenticationGroup
+                .MapPost("/create-user", AuthenticationEndpoints.CreateUser)
                 .AllowAnonymous();
 
             return webApplication;
