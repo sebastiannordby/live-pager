@@ -25,24 +25,8 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
       ]
       secrets: [
         {
-          name: 'BlobConnectionString'
+          name: 'blobconnectionstring'
           value: blobConnectionString
-        }
-        {
-          name: 'Orleans:Storage:LocationStore:ContainerName'
-          value: locationStoreName
-        }
-        {
-          name: 'Orleans:Storage:MissionStore:ContainerName'
-          value: missionStoreName
-        }
-        {
-          name: 'Orleans:Storage:MissionCollectionStore:ContainerName'
-          value: missionCollectionStoreName
-        }
-        {
-          name: 'Orleans:Storage:PubSubStore:ContainerName'
-          value: pubSubStoreName
         }
       ]
     }
@@ -58,7 +42,23 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
           env: [
             {
               name: 'BlobConnectionString'
-              secretRef: 'BlobConnectionString'
+              secretRef: 'blobconnectionstring'
+            }
+            {
+              name: 'Orleans:Storage:LocationStore:ContainerName'
+              value: locationStoreName
+            }
+            {
+              name: 'Orleans:Storage:MissionStore:ContainerName'
+              value: missionStoreName
+            }
+            {
+              name: 'Orleans:Storage:MissionCollectionStore:ContainerName'
+              value: missionCollectionStoreName
+            }
+            {
+              name: 'Orleans:Storage:PubSubStore:ContainerName'
+              value: pubSubStoreName
             }
           ]
         }
