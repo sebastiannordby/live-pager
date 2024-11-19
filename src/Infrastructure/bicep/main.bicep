@@ -2,6 +2,9 @@
 @secure()
 param sqlDatabasePassword string
 
+@secure()
+param appObjectId string
+
 var resourceLocation = resourceGroup().location
 var acrName = 'livepager.azurecr.io'
 var locationStoreName = 'location-storage'
@@ -19,6 +22,15 @@ resource livePagerKeyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' = {
       name: 'standard'
     }
     tenantId: subscription().tenantId
+    accessPolicies: [
+      {
+        tenantId: subscription().tenantId
+        objectId: appObjectId
+        permissions: {
+          secrets: ['get', 'list', 'set']
+        }
+      }
+    ]
   }
 }
 
