@@ -32,7 +32,7 @@ resource sqlConnectionStringKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@20
   parent: livePagerKeyVault
   name: 'SqlConnectionString'
   properties: {
-    value: 'Server=tcp:${sqlServer.name}.database.windows.net,1433;Database=${databaseName};User ID=${adminUsername};Password=${adminPassword};Encrypt=true;Connection Timeout=30;'
+    value: 'Server=tcp:${sqlServer.name}.${environment().sqlManagement},1433;Database=${databaseName};User ID=${adminUsername};Password=${adminPassword};Encrypt=true;Connection Timeout=30;'
   }
 }
 
