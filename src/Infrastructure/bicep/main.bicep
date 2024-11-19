@@ -27,7 +27,7 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
   location: resourceLocation
   properties: {
     appLogsConfiguration: {
-      destination: 'log-analytics'
+      destination: 'none'
     }
   }
 }
