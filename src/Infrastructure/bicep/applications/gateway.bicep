@@ -3,7 +3,6 @@
 param sqlConnectionString string
 @secure()
 param storageAccountConnectionString string
-param managedEnvironmentId string
 param acrServer string
 param resourceGroupLocation string
 param gatewayImage string
@@ -16,7 +15,6 @@ resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'livepager-gateway'
   location: resourceGroupLocation
   properties: {
-    managedEnvironmentId: managedEnvironmentId
     configuration: {
       ingress: {
         external: true

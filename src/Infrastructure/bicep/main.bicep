@@ -22,11 +22,6 @@ resource livePagerKeyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' = {
   }
 }
 
-resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
-  name: 'livepager-env'
-  location: resourceLocation
-}
-
 module storage './storage/storage.bicep' = {
   name: 'storageDeployment'
   params: {
@@ -55,7 +50,6 @@ module siloHost './applications/silohost.bicep' = {
   params: {
     blobConnectionString: livePagerKeyVault.getSecret(storage.outputs.blobConnectionStringKeyVaultSecretName)
     acrServer: acrName
-    managedEnvironmentId: containerAppEnv.id
     resourceGroupLocation: resourceLocation
     siloHostImage: '${acrName}/silohost-service:latest'
     locationStoreName: locationStoreName
@@ -70,7 +64,6 @@ module gatewayService './applications/gateway.bicep' = {
   params: {
     sqlConnectionString: livePagerKeyVault.getSecret(sql.outputs.sqlConnectionStringKeyVaultSecretName)
     storageAccountConnectionString: livePagerKeyVault.getSecret(storage.outputs.blobConnectionStringKeyVaultSecretName)
-    managedEnvironmentId: containerAppEnv.id
     resourceGroupLocation: resourceGroup().location
     acrServer: acrName
     gatewayImage: '${acrName}/gateway-service:latest'

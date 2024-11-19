@@ -1,7 +1,6 @@
 @description('Deploys the SiloHost Service.')
 @secure()
 param blobConnectionString string
-param managedEnvironmentId string
 param acrServer string
 param resourceGroupLocation string
 param siloHostImage string // Image for the gateway service container
@@ -14,7 +13,6 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'livepager-silohost'
   location: resourceGroupLocation
   properties: {
-    managedEnvironmentId: managedEnvironmentId
     configuration: {
       ingress: {
         external: true
