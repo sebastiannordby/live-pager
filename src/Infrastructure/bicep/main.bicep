@@ -5,6 +5,12 @@ param sqlDatabasePassword string
 @secure()
 param appObjectId string
 
+@secure()
+param acrUsername string
+
+@secure()
+param acrPassword string
+
 var resourceLocation = resourceGroup().location
 var acrName = 'livepager.azurecr.io'
 var locationStoreName = 'location-storage'
@@ -62,6 +68,8 @@ module siloHost './applications/silohost.bicep' = {
   params: {
     blobConnectionString: livePagerKeyVault.getSecret(storage.outputs.blobConnectionStringKeyVaultSecretName)
     acrServer: acrName
+    acrUsername: acrUsername
+    acrPassword: acrPassword
     resourceGroupLocation: resourceLocation
     siloHostImage: '${acrName}/silohost-service:latest'
     locationStoreName: locationStoreName
@@ -78,6 +86,8 @@ module gatewayService './applications/gateway.bicep' = {
     storageAccountConnectionString: livePagerKeyVault.getSecret(storage.outputs.blobConnectionStringKeyVaultSecretName)
     resourceGroupLocation: resourceGroup().location
     acrServer: acrName
+    acrUsername: acrUsername
+    acrPassword: acrPassword
     gatewayImage: '${acrName}/gateway-service:latest'
     locationStoreName: locationStoreName
     missionStoreName: missionStoreName

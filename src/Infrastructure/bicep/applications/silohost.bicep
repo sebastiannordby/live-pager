@@ -1,6 +1,10 @@
 @description('Deploys the SiloHost Service.')
 @secure()
 param blobConnectionString string
+@secure()
+param acrUsername string
+@secure()
+param acrPassword string
 param acrServer string
 param resourceGroupLocation string
 param siloHostImage string // Image for the gateway service container
@@ -21,12 +25,18 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
       registries: [
         {
           server: acrServer
+          username: acrUsername
+          passwordSecretRef: 'acrpassword'
         }
       ]
       secrets: [
         {
           name: 'blobconnectionstring'
           value: blobConnectionString
+        }
+        {
+          name: 'acrpassword'
+          value: acrPassword
         }
       ]
     }

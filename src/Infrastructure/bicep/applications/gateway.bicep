@@ -3,6 +3,11 @@
 param sqlConnectionString string
 @secure()
 param storageAccountConnectionString string
+@secure()
+param acrUsername string
+@secure()
+param acrPassword string
+
 param acrServer string
 param resourceGroupLocation string
 param gatewayImage string
@@ -14,17 +19,15 @@ param pubSubStoreName string
 resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'livepager-gateway'
   location: resourceGroupLocation
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     configuration: {
       ingress: {
         external: true
         targetPort: 5170
       }
-      registries: [
-        {
-          server: acrServer
-        }
-      ]
       secrets: [
         {
           name: 'connectionstring'
@@ -33,6 +36,10 @@ resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
         {
           name: 'blobconnectionstring'
           value: storageAccountConnectionString
+        }
+        {
+          name: 'acrpassword'
+          value: acrPassword
         }
       ]
     }
@@ -74,6 +81,24 @@ resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
         }
       ]
     }
+  }
+}
+
+resource blobStorageRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(gatewayService.id, 'StorageBlobDataContributor')
+  properties: {
+    principalId: gatewayService.identity.principalId
+    roleDefinitionName: 'Storage Blob Data Contributor'
+    scope: resourceId('Microsoft.Storage/storageAccounts', storageAccountName)
+  }
+}
+
+resource sqlDbRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(gatewayService.id, 'SQLDBContributor')
+  properties: {
+    principalId: gatewayService.identity.principalId
+    roleDefinitionName: 'SQL DB Contributor'
+    scope: resourceId('Microsoft.Sql/servers/databases', sqlServerName, sqlDatabaseName)
   }
 }
 
