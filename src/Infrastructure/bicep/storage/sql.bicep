@@ -23,6 +23,10 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2024-05-01-preview' = {
   name: databaseName
   location: location
   parent: sqlServer
+  sku: {
+    name: 'Basic'
+    tier: 'Basic'
+  }
   properties: {
     collation: 'SQL_Latin1_General_CP1_CI_AS'
   }
