@@ -30,7 +30,7 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2024-05-01-preview' = {
 
 resource sqlConnectionStringKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' = {
   parent: livePagerKeyVault
-  name: 'SqlConnectionString'
+  name: 'sqlconnectionstring'
   properties: {
     value: 'Server=tcp:${sqlServer.name}.${environment().sqlManagement},1433;Database=${databaseName};User ID=${adminUsername};Password=${adminPassword};Encrypt=true;Connection Timeout=30;'
   }

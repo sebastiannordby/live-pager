@@ -52,7 +52,7 @@ resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2023-05-0
 
 resource blobConnectionStringKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' = {
   parent: livePagerKeyVault
-  name: 'BlobConnectionString'
+  name: 'blobconnectionstring'
   properties: {
     value: storageAccount.listKeys().keys[0].value
   }
