@@ -1,6 +1,6 @@
 @description('Deploys the SiloHost Service.')
-
-param storageAccountConnectionString string
+@secure()
+param blobConnectionString string
 param managedEnvironmentId string
 param acrServer string
 param resourceGroupLocation string
@@ -18,7 +18,7 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
     configuration: {
       ingress: {
         external: true
-        targetPort: 5170 // Example target port for Gateway API
+        targetPort: 5171
       }
       registries: [
         {
@@ -28,11 +28,7 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
       secrets: [
         {
           name: 'BlobConnectionString'
-          value: storageAccountConnectionString
-        }
-        {
-          name: 'BlobConnectionString'
-          value: storageAccountConnectionString
+          value: blobConnectionString
         }
         {
           name: 'Orleans:Storage:LocationStore:ContainerName'
@@ -55,16 +51,16 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
     template: {
       containers: [
         {
-          image: siloHostImage // Distinct image for the gateway service
+          image: siloHostImage
           name: 'silohost-service'
           resources: {
             cpu: 1
-            memory: '0.5Gi' // Minimum memory allocation
+            memory: '0.5Gi'
           }
           env: [
             {
               name: 'BlobConnectionString'
-              secretRef: 'BlobConnectionString' // Use the secret for storage
+              secretRef: 'BlobConnectionString'
             }
           ]
         }

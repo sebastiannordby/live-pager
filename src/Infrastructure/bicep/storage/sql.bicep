@@ -1,10 +1,14 @@
 @description('Deploys an Azure SQL Database for Gateway Service.')
 param adminUsername string
-@description('The administrator password for the SQL server.')
 @secure()
 param adminPassword string
 param databaseName string
 param location string
+param keyVaultName string
+
+resource livePagerKeyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' existing = {
+  name: keyVaultName
+}
 
 resource sqlServer 'Microsoft.Sql/servers@2024-05-01-preview' = {
   name: '${databaseName}-server'
@@ -24,4 +28,12 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2024-05-01-preview' = {
   }
 }
 
-output connectionString string = 'Server=tcp:${sqlServer.name}.${environment().suffixes.sqlServerHostname},1433;Database=${databaseName};User ID=${adminUsername};Encrypt=true;Connection Timeout=30;'
+resource sqlConnectionStringKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' = {
+  parent: livePagerKeyVault
+  name: 'SqlConnectionString'
+  properties: {
+    value: 'Server=tcp:${sqlServer.name}.database.windows.net,1433;Database=${databaseName};User ID=${adminUsername};Password=${adminPassword};Encrypt=true;Connection Timeout=30;'
+  }
+}
+
+output sqlConnectionStringKeyVaultSecretName string = sqlConnectionStringKeyVaultSecret.name

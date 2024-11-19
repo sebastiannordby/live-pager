@@ -1,11 +1,12 @@
 @description('Deploys the Gateway Service.')
-
+@secure()
 param sqlConnectionString string
+@secure()
 param storageAccountConnectionString string
 param managedEnvironmentId string
 param acrServer string
 param resourceGroupLocation string
-param gatewayImage string // Image for the gateway service container
+param gatewayImage string
 param locationStoreName string
 param missionStoreName string
 param missionCollectionStoreName string
@@ -19,7 +20,7 @@ resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
     configuration: {
       ingress: {
         external: true
-        targetPort: 5170 // Example target port for Gateway API
+        targetPort: 5170
       }
       registries: [
         {
@@ -56,20 +57,20 @@ resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
     template: {
       containers: [
         {
-          image: gatewayImage // Distinct image for the gateway service
+          image: gatewayImage
           name: 'gateway-service'
           resources: {
             cpu: 1
-            memory: '0.5Gi' // Minimum memory allocation
+            memory: '0.5Gi'
           }
           env: [
             {
               name: 'ConnectionString'
-              secretRef: 'ConnectionString' // Use the secret for SQL connection string
+              secretRef: 'ConnectionString'
             }
             {
               name: 'BlobConnectionString'
-              secretRef: 'BlobConnectionString' // Use the secret for storage
+              secretRef: 'BlobConnectionString'
             }
           ]
         }
