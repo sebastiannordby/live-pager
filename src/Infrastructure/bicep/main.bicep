@@ -25,11 +25,6 @@ resource livePagerKeyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' = {
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
   name: 'livepager-env'
   location: resourceLocation
-  properties: {
-    appLogsConfiguration: {
-      destination: 'none'
-    }
-  }
 }
 
 module storage './storage/storage.bicep' = {
