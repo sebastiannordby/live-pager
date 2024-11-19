@@ -55,7 +55,7 @@ module sql './storage/sql.bicep' = {
   }
 }
 
-module siloHost './applications/siloHost.bicep' = {
+module siloHost './applications/silohost.bicep' = {
   name: 'siloHostDeployment'
   params: {
     blobConnectionString: livePagerKeyVault.getSecret(storage.outputs.blobConnectionStringKeyVaultSecretName)
