@@ -1,7 +1,15 @@
 @description('Deploys the LivePager application to Azure.')
-// resource acr 'Microsoft.ContainerRegistry/registries@2022-12-01' existing = {
-//     name: '<acr-name>'
-// }
+@secure()
+param sqlDatabasePassword string
+
+@secure()
+param appObjectId string
+
+@secure()
+param acrUsername string
+
+@secure()
+param acrPassword string
 
 var resourceLocation = resourceGroup().location
 var acrName = 'livepager.azurecr.io'
@@ -10,14 +18,26 @@ var missionStoreName = 'mission-store'
 var missionCollectionStoreName = 'mission-collection-store'
 var pubSubStoreName = 'pub-sub'
 
-resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
-    name: 'livepager-env'
-    location: resourceLocation
-    properties: {
-        appLogsConfiguration: {
-        destination: 'log-analytics'
-        }
+resource livePagerKeyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' = {
+  name: 'livePagerKeyVault'
+  location: resourceLocation
+  properties: {
+    enabledForTemplateDeployment: true
+    sku: {
+      family: 'A'
+      name: 'standard'
     }
+    tenantId: subscription().tenantId
+    accessPolicies: [
+      {
+        tenantId: subscription().tenantId
+        objectId: appObjectId
+        permissions: {
+          secrets: ['get', 'list', 'set']
+        }
+      }
+    ]
+  }
 }
 
 module storage './storage/storage.bicep' = {
@@ -26,23 +46,9 @@ module storage './storage/storage.bicep' = {
     storageAccountName: 'livepagerstorage'
     locationStoreName: locationStoreName
     missionStoreName: missionStoreName
-    missionCollectionStoreName:missionCollectionStoreName
+    missionCollectionStoreName: missionCollectionStoreName
     pubSubStoreName: pubSubStoreName
-  }
-}
-
-module siloHost './applications/siloHost.bicep' = {
-  name: 'siloHostDeployment'
-  params: {
-    storageAccountConnectionString: storage.outputs.connectionString
-    acrServer: acrName
-    managedEnvironmentId: containerAppEnv.id
-    resourceGroupLocation: resourceLocation
-    siloHostImage: '${acrName}/silohost-service:latest'
-    locationStoreName: locationStoreName
-    missionStoreName: missionStoreName
-    missionCollectionStoreName:missionCollectionStoreName
-    pubSubStoreName: pubSubStoreName
+    keyVaultName: livePagerKeyVault.name
   }
 }
 
@@ -50,25 +56,38 @@ module sql './storage/sql.bicep' = {
   name: 'sqlDeployment'
   params: {
     adminUsername: 'sqladmin'
-    adminPassword: 'SecureP@ssw0rd!'
+    adminPassword: sqlDatabasePassword
     databaseName: 'LivePagerGatewayDb'
     location: resourceLocation
+    keyVaultName: livePagerKeyVault.name
+  }
+}
+
+module siloHost './applications/silohost.bicep' = {
+  name: 'siloHostDeployment'
+  params: {
+    storageAccountName: 'livepagerstorage'
+    resourceGroupLocation: resourceLocation
+    siloHostImage: '${acrName}/silohost-service:latest'
+    locationStoreName: locationStoreName
+    missionStoreName: missionStoreName
+    missionCollectionStoreName: missionCollectionStoreName
+    pubSubStoreName: pubSubStoreName
   }
 }
 
 module gatewayService './applications/gateway.bicep' = {
   name: 'gatewayServiceDeployment'
   params: {
-    sqlConnectionString: sql.outputs.connectionString
-    storageAccountConnectionString: storage.outputs.connectionString
-    managedEnvironmentId: containerAppEnv.id
+    storageAccountName: 'livepagerstorage'
     resourceGroupLocation: resourceGroup().location
-    acrServer: acrName
     gatewayImage: '${acrName}/gateway-service:latest'
     locationStoreName: locationStoreName
     missionStoreName: missionStoreName
-    missionCollectionStoreName:missionCollectionStoreName
+    missionCollectionStoreName: missionCollectionStoreName
     pubSubStoreName: pubSubStoreName
+    sqlDatabaseName: 'LivePagerGatewayDb'
+    sqlServerName: 'LivePagerGatewayDb-server'
   }
 }
 

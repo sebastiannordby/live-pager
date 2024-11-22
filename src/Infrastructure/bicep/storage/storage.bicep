@@ -4,6 +4,11 @@ param locationStoreName string
 param missionStoreName string
 param missionCollectionStoreName string
 param pubSubStoreName string
+param keyVaultName string
+
+resource livePagerKeyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' existing = {
+  name: keyVaultName
+}
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: storageAccountName
@@ -39,10 +44,19 @@ resource pubSubStoreContainer 'Microsoft.Storage/storageAccounts/blobServices/co
   name: pubSubStoreName
 }
 
-resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2022-09-01' = {
+resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2023-05-01' = {
   parent: storageAccount
   name: 'default'
   properties: {} // Default properties for queue service
 }
 
-output connectionString string = listKeys(storageAccount.name, storageAccount.apiVersion).keys[0].value
+resource blobConnectionStringKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' = {
+  parent: livePagerKeyVault
+  name: 'blobconnectionstring'
+  properties: {
+    value: storageAccount.listKeys().keys[0].value
+  }
+}
+
+output storageAccountKey string = storageAccount.listKeys().keys[0].value
+output blobConnectionStringKeyVaultSecretName string = blobConnectionStringKeyVaultSecret.name

@@ -4,7 +4,7 @@ on:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  push-container-images:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -15,11 +15,35 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy Bicep file
-        uses: azure/arm-deploy@v2.0.0
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Infrastructure/bicep/main.bicep
-          parameters: "storagePrefix=mystore storageSKU=Standard_LRS"
-          failOnStdErr: false
+      - name: Build Gateway Docker image
+        run: |
+          docker build -f src/Gateway/LiverPager.Gateway/Dockerfile -t livepager.azurecr.io/gateway-service:latest .
+
+      - name: Build Gateway Docker image
+        run: |
+          docker build -f src/API/SiloHost/LivePager.SiloHost/Dockerfile -t livepager.azurecr.io/silohost-service:latest .
+
+      - name: Push Docker image to ACR
+        run: |
+          docker push livepager.azurecr.io/gateway-service:latest
+          docker push livepager.azurecr.io/silohost-service:latest
+
+  # deploy-with-bicep:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@main
+
+  #     - name: Log into Azure
+  #       uses: azure/login@v2.2.0
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+  #     - name: Deploy Bicep file
+  #       uses: azure/arm-deploy@v2.0.0
+  #       with:
+  #         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+  #         resourceGroupName: ${{ secrets.AZURE_RG }}
+  #         template: ./src/Infrastructure/bicep/main.bicep
+  #         parameters: "sqlDatabasePassword=${{ secrets.SQL_DATABASE_PASSWORD }} appObjectId=${{ secrets.APP_OBJECT_ID }} acrUsername=${{ secrets.ACR_USERNAME }} acrPassword=${{ secrets.ACR_PASSWORD }}"
+  #         failOnStdErr: false

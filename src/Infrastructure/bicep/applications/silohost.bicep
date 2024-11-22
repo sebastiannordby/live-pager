@@ -1,10 +1,7 @@
 @description('Deploys the SiloHost Service.')
-
-param storageAccountConnectionString string
-param managedEnvironmentId string
-param acrServer string
+param storageAccountName string
 param resourceGroupLocation string
-param siloHostImage string // Image for the gateway service container
+param siloHostImage string 
 param locationStoreName string
 param missionStoreName string
 param missionCollectionStoreName string
@@ -14,37 +11,41 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'livepager-silohost'
   location: resourceGroupLocation
   properties: {
-    managedEnvironmentId: managedEnvironmentId
     configuration: {
       ingress: {
         external: true
-        targetPort: 5170 // Example target port for Gateway API
+        targetPort: 5171
       }
-      registries: [
-        {
-          server: acrServer
-        }
-      ]
-      secrets: [
-        {
-          name: 'BlobConnectionString'
-          value: storageAccountConnectionString
-        }
-      ]
     }
     template: {
       containers: [
         {
-          image: siloHostImage // Distinct image for the gateway service
+          image: siloHostImage
           name: 'silohost-service'
           resources: {
             cpu: 1
-            memory: '0.5Gi' // Minimum memory allocation
+            memory: '0.5Gi'
           }
           env: [
             {
               name: 'BlobConnectionString'
-              secretRef: 'BlobConnectionString' // Use the secret for storage
+              value: 'https://${storageAccountName}.blob.core.windows.net;Authentication=ManagedIdentity' 
+            }
+            {
+              name: 'Orleans:Storage:LocationStore:ContainerName'
+              value: locationStoreName
+            }
+            {
+              name: 'Orleans:Storage:MissionStore:ContainerName'
+              value: missionStoreName
+            }
+            {
+              name: 'Orleans:Storage:MissionCollectionStore:ContainerName'
+              value: missionCollectionStoreName
+            }
+            {
+              name: 'Orleans:Storage:PubSubStore:ContainerName'
+              value: pubSubStoreName
             }
           ]
         }
@@ -52,5 +53,15 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
     }
   }
 }
+
+resource blobStorageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(siloHostService.id, 'StorageBlobDataContributor')
+  properties: {
+    principalId: siloHostService.identity.principalId
+    roleDefinitionId: 'Storage Blob Data Contributor'
+    scope: resourceId('Microsoft.Storage/storageAccounts', storageAccountName)
+  }
+}
+
 
 output apiUri string = 'https://${siloHostService.name}.azurewebsites.net'
