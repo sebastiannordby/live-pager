@@ -17,11 +17,11 @@ jobs:
 
       - name: Build Gateway Docker image
         run: |
-          docker build -f src/Gateway/LiverPager.Gateway/Dockerfile -t livepager.azurecr.io/gateway-service:latest .
+          docker build -f ./src/Gateway/LiverPager.Gateway/Dockerfile -t livepager.azurecr.io/gateway-service:latest .
 
       - name: Build Gateway Docker image
         run: |
-          docker build -f src/API/SiloHost/LivePager.SiloHost/Dockerfile -t livepager.azurecr.io/silohost-service:latest .
+          docker build -f ./src/API/SiloHost/LivePager.SiloHost/Dockerfile -t livepager.azurecr.io/silohost-service:latest .
 
       - name: Push Docker image to ACR
         run: |
