@@ -15,11 +15,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build Gateway Docker image
+      - name: Build Gateway image
         run: |
-          docker build -f ./src/Gateway/LiverPager.Gateway/Dockerfile -t livepager.azurecr.io/gateway-service:latest .
+          docker build -f ./src/Gateway/LivePager.Gateway/Dockerfile -t livepager.azurecr.io/gateway-service:latest .
 
-      - name: Build Gateway Docker image
+      - name: Build SiloHost image
         run: |
           docker build -f ./src/API/SiloHost/LivePager.SiloHost/Dockerfile -t livepager.azurecr.io/silohost-service:latest .
 
