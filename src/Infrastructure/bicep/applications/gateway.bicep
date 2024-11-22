@@ -1,14 +1,7 @@
 @description('Deploys the Gateway Service.')
-@secure()
-param sqlConnectionString string
-@secure()
-param storageAccountConnectionString string
-@secure()
-param acrUsername string
-@secure()
-param acrPassword string
-
-param acrServer string
+param sqlServerName string
+param sqlDatabaseName string
+param storageAccountName string
 param resourceGroupLocation string
 param gatewayImage string
 param locationStoreName string
@@ -28,20 +21,6 @@ resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
         external: true
         targetPort: 5170
       }
-      secrets: [
-        {
-          name: 'connectionstring'
-          value: sqlConnectionString
-        }
-        {
-          name: 'blobconnectionstring'
-          value: storageAccountConnectionString
-        }
-        {
-          name: 'acrpassword'
-          value: acrPassword
-        }
-      ]
     }
     template: {
       containers: [
@@ -55,11 +34,11 @@ resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
           env: [
             {
               name: 'ConnectionString'
-              secretRef: 'connectionstring'
+              value: 'Server=tcp:${sqlServerName}.${environment().sqlManagement},1433;Database=${sqlDatabaseName};Authentication=ManagedIdentity'
             }
             {
               name: 'BlobConnectionString'
-              secretRef: 'blobconnectionstring'
+              value: 'https://${storageAccountName}.blob.core.windows.net;Authentication=ManagedIdentity' 
             }
             {
               name: 'Orleans:Storage:LocationStore:ContainerName'
@@ -84,20 +63,20 @@ resource gatewayService 'Microsoft.App/containerApps@2024-03-01' = {
   }
 }
 
-resource blobStorageRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource blobStorageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(gatewayService.id, 'StorageBlobDataContributor')
   properties: {
     principalId: gatewayService.identity.principalId
-    roleDefinitionName: 'Storage Blob Data Contributor'
+    roleDefinitionId: 'Storage Blob Data Contributor'
     scope: resourceId('Microsoft.Storage/storageAccounts', storageAccountName)
   }
 }
 
-resource sqlDbRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource sqlDbRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(gatewayService.id, 'SQLDBContributor')
   properties: {
     principalId: gatewayService.identity.principalId
-    roleDefinitionName: 'SQL DB Contributor'
+    roleDefinitionId: 'SQL DB Contributor'
     scope: resourceId('Microsoft.Sql/servers/databases', sqlServerName, sqlDatabaseName)
   }
 }

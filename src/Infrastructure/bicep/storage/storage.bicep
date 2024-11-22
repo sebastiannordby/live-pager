@@ -58,4 +58,5 @@ resource blobConnectionStringKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2
   }
 }
 
+output storageAccountKey string = storageAccount.listKeys().keys[0].value
 output blobConnectionStringKeyVaultSecretName string = blobConnectionStringKeyVaultSecret.name

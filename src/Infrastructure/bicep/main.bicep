@@ -66,10 +66,7 @@ module sql './storage/sql.bicep' = {
 module siloHost './applications/silohost.bicep' = {
   name: 'siloHostDeployment'
   params: {
-    blobConnectionString: livePagerKeyVault.getSecret(storage.outputs.blobConnectionStringKeyVaultSecretName)
-    acrServer: acrName
-    acrUsername: acrUsername
-    acrPassword: acrPassword
+    storageAccountName: 'livepagerstorage'
     resourceGroupLocation: resourceLocation
     siloHostImage: '${acrName}/silohost-service:latest'
     locationStoreName: locationStoreName
@@ -82,17 +79,15 @@ module siloHost './applications/silohost.bicep' = {
 module gatewayService './applications/gateway.bicep' = {
   name: 'gatewayServiceDeployment'
   params: {
-    sqlConnectionString: livePagerKeyVault.getSecret(sql.outputs.sqlConnectionStringKeyVaultSecretName)
-    storageAccountConnectionString: livePagerKeyVault.getSecret(storage.outputs.blobConnectionStringKeyVaultSecretName)
+    storageAccountName: 'livepagerstorage'
     resourceGroupLocation: resourceGroup().location
-    acrServer: acrName
-    acrUsername: acrUsername
-    acrPassword: acrPassword
     gatewayImage: '${acrName}/gateway-service:latest'
     locationStoreName: locationStoreName
     missionStoreName: missionStoreName
     missionCollectionStoreName: missionCollectionStoreName
     pubSubStoreName: pubSubStoreName
+    sqlDatabaseName: 'LivePagerGatewayDb'
+    sqlServerName: 'LivePagerGatewayDb-server'
   }
 }
 

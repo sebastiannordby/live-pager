@@ -1,13 +1,7 @@
 @description('Deploys the SiloHost Service.')
-@secure()
-param blobConnectionString string
-@secure()
-param acrUsername string
-@secure()
-param acrPassword string
-param acrServer string
+param storageAccountName string
 param resourceGroupLocation string
-param siloHostImage string // Image for the gateway service container
+param siloHostImage string 
 param locationStoreName string
 param missionStoreName string
 param missionCollectionStoreName string
@@ -22,23 +16,6 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
         external: true
         targetPort: 5171
       }
-      registries: [
-        {
-          server: acrServer
-          username: acrUsername
-          passwordSecretRef: 'acrpassword'
-        }
-      ]
-      secrets: [
-        {
-          name: 'blobconnectionstring'
-          value: blobConnectionString
-        }
-        {
-          name: 'acrpassword'
-          value: acrPassword
-        }
-      ]
     }
     template: {
       containers: [
@@ -52,7 +29,7 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
           env: [
             {
               name: 'BlobConnectionString'
-              secretRef: 'blobconnectionstring'
+              value: 'https://${storageAccountName}.blob.core.windows.net;Authentication=ManagedIdentity' 
             }
             {
               name: 'Orleans:Storage:LocationStore:ContainerName'
@@ -76,5 +53,15 @@ resource siloHostService 'Microsoft.App/containerApps@2024-03-01' = {
     }
   }
 }
+
+resource blobStorageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(siloHostService.id, 'StorageBlobDataContributor')
+  properties: {
+    principalId: siloHostService.identity.principalId
+    roleDefinitionId: 'Storage Blob Data Contributor'
+    scope: resourceId('Microsoft.Storage/storageAccounts', storageAccountName)
+  }
+}
+
 
 output apiUri string = 'https://${siloHostService.name}.azurewebsites.net'
